@@ -1,17 +1,20 @@
 import { React, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import memoryJarImage from "../images/memory-jar.jpg";
-import AppHeader from "../AppHeader";
+import AppBackground from "../AppBackground";
 import Memory from "./Memory";
 import "./MemoryJarApp.css";
 
-function MemoryJarApp(props) {
+function MemoryJarApp() {
   const [memories, setMemories] = useState([]);
   var amounts = [];
   const [memoryToAdd, setMemoryToAdd] = useState("");
 
   const [percentages, setPercentages] = useState([]);
   const [cumulativePercentages, setCumulativePercentages] = useState([]);
+
+  const navigate = useNavigate();
 
   function createPercentages() {
     const total = amounts.reduce((partialSum, a) => partialSum + +a, 0);
@@ -54,10 +57,7 @@ function MemoryJarApp(props) {
 
   return (
     <>
-      <AppHeader
-        setPageValue={props.setPageValue}
-        title="Add memories, thoughts and feelings to the jar below"
-      />
+      <AppBackground />
 
       <div className="row align-items-center">
         <div className="col-sm-5" style={{ paddingLeft: "2%" }}>
@@ -66,7 +66,7 @@ function MemoryJarApp(props) {
           ))}
         </div>
         <div className="col-sm-3">
-          <div class="memory-container">
+          <div className="memory-container">
             <img
               src={memoryJarImage}
               alt="Memory Jar"
@@ -85,27 +85,38 @@ function MemoryJarApp(props) {
           ))}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="memory_inputs">
           <textarea
             id="memory-input"
             rows="4"
+            className="user_input"
             value={memoryToAdd}
             onChange={(e) => setMemoryToAdd(e.target.value)}
           ></textarea>
-          <button id="memory-input-button" type="submit" onClick={handleClick}>
-            Add
-          </button>
+          <div className="memory_buttons">
+            <button id="memory-input-button" className="button" onClick={handleClick}>
+              Add
+            </button>
 
-          <button
-            id="create-jar-button"
-            type="submit"
-            onClick={createPercentages}
-          >
-            Fill your jar!
-          </button>
+            <button
+              id="create-jar-button"
+              type="submit"
+              onClick={createPercentages}
+              className="button"
+            >
+              Fill your jar!
+            </button>
+          </div>
         </div>
 
         <div style={{ display: "flex", justifyContent: "center" }}></div>
+        <button
+          className="button back_button"
+          onClick={() => navigate("/")}
+          >
+            <i className="fas_back_arrow fa-solid fa-arrow-left" alt="back button"></i>
+            Back
+        </button>
       </div>
     </>
   );

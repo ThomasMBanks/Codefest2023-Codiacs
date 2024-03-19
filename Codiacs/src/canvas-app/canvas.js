@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import "./canvas.css";
 // import canvas_script from "./canvas_script.js";
-import AppHeader from "../AppHeader";
 import { useEffect, useState } from "react";
 import Button from "../components/Button/Button.tsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Modal from "../components/Modal/Modal.tsx";
+import AppBackground from "../AppBackground";
 
 function Canvas(props) {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [selectedFileType, setSelectedFileType] = useState("jpeg");
+  const [drawingStack, setDrawingStack] = useState([]);
+  const [undoStack, setUndoStack] = useState([]);
 
   const handleFileTypeChange = (event) => {
     setSelectedFileType(event.target.value);
@@ -48,6 +52,17 @@ function Canvas(props) {
 
       const stopDrawing = () => {
         isMouseDown = false;
+
+        const paintCanvas = document.querySelector(".js-paint");
+        const context = paintCanvas.getContext("2d");
+        setDrawingStack((prevDrawingStack) => [
+          ...prevDrawingStack,
+          context.getImageData(0, 0, paintCanvas.width, paintCanvas.height),
+        ]);
+        setUndoStack([]);
+      };
+      const stopDrawingMouseOut = () => {
+        isMouseDown = false;
       };
       const startDrawing = (event) => {
         isMouseDown = true;
@@ -67,24 +82,26 @@ function Canvas(props) {
         }
       };
 
-      if (true) {
-        paintCanvas.addEventListener("mousedown", startDrawing);
-        paintCanvas.addEventListener("mousemove", drawLine);
-        paintCanvas.addEventListener("mouseup", stopDrawing);
-        paintCanvas.addEventListener("mouseout", stopDrawing);
-      } else {
-        paintCanvas.removeEventListener("mousedown", startDrawing);
-        paintCanvas.removeEventListener("mousemove", drawLine);
-        paintCanvas.removeEventListener("mouseup", stopDrawing);
-        paintCanvas.removeEventListener("mouseout", stopDrawing);
-      }
+      paintCanvas.addEventListener("mousedown", startDrawing);
+      paintCanvas.addEventListener("mousemove", drawLine);
+      paintCanvas.addEventListener("mouseup", stopDrawing);
+      paintCanvas.addEventListener("mouseout", stopDrawingMouseOut);
+      paintCanvas.addEventListener("touchstart", startDrawing);
+      paintCanvas.addEventListener("touchmove", drawLine);
+      paintCanvas.addEventListener("touchend", stopDrawing);
+      paintCanvas.addEventListener("touchcancel", stopDrawingMouseOut);
 
       // Clean up event listeners when the component unmounts
       return () => {
         paintCanvas.removeEventListener("mousedown", startDrawing);
         paintCanvas.removeEventListener("mousemove", drawLine);
         paintCanvas.removeEventListener("mouseup", stopDrawing);
-        paintCanvas.removeEventListener("mouseout", stopDrawing);
+        paintCanvas.removeEventListener("mouseout", stopDrawingMouseOut);
+        paintCanvas.removeEventListener("touchstart", startDrawing);
+        paintCanvas.removeEventListener("touchmove", drawLine);
+        paintCanvas.removeEventListener("touchend", stopDrawing);
+        paintCanvas.removeEventListener("touchcancel", stopDrawingMouseOut);
+        window.removeEventListener("resize", updateCanvasSize);
       };
     }
   }, []);
@@ -95,28 +112,30 @@ function Canvas(props) {
     const canvas = document.getElementById("paint-canvas");
 
     // Store the current drawing state
-    const context = canvas.getContext("2d");
-    const lineWidth = context.lineWidth;
-    const strokeStyle = context.strokeStyle;
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      const lineWidth = context.lineWidth;
+      const strokeStyle = context.strokeStyle;
 
-    // Get the computed styles of the canvas element
-    const computedStyles = window.getComputedStyle(canvas);
+      // Get the computed styles of the canvas element
+      const computedStyles = window.getComputedStyle(canvas);
 
-    // Get the CSS height and width in pixels
-    const cssWidth = computedStyles.getPropertyValue("width");
-    const cssHeight = computedStyles.getPropertyValue("height");
+      // Get the CSS height and width in pixels
+      const cssWidth = computedStyles.getPropertyValue("width");
+      const cssHeight = computedStyles.getPropertyValue("height");
 
-    // Remove "px" from the values to get only the numeric part
-    const widthInPixels = parseInt(cssWidth, 10);
-    const heightInPixels = parseInt(cssHeight, 10);
+      // Remove "px" from the values to get only the numeric part
+      const widthInPixels = parseInt(cssWidth, 10);
+      const heightInPixels = parseInt(cssHeight, 10);
 
-    // Set the width and height HTML attributes of the canvas element
-    canvas.setAttribute("width", widthInPixels.toString());
-    canvas.setAttribute("height", heightInPixels.toString());
+      // Set the width and height HTML attributes of the canvas element
+      canvas.setAttribute("width", widthInPixels.toString());
+      canvas.setAttribute("height", heightInPixels.toString());
 
-    // Redraw the canvas content
-    context.lineWidth = lineWidth;
-    context.strokeStyle = strokeStyle;
+      // Redraw the canvas content
+      context.lineWidth = lineWidth;
+      context.strokeStyle = strokeStyle;
+    }
   }
 
   const clearCanvas = () => {
@@ -126,6 +145,49 @@ function Canvas(props) {
     // Clear the entire canvas
     if (context) {
       context.clearRect(0, 0, canvas.width, canvas.height);
+      //setDrawingStack([]);
+      // setUndoStack((prevUndoStack) => [
+      //   ...prevUndoStack,
+      //   context.getImageData(0, 0, canvas.width, canvas.height),
+      // ]);
+      //setUndoStack([]);
+      setDrawingStack((prevDrawingStack) => [
+        ...prevDrawingStack,
+        context.getImageData(0, 0, canvas.width, canvas.height),
+      ]);
+    }
+  };
+
+  const undoCanvas = () => {
+    const paintCanvas = document.querySelector(".js-paint");
+    const context = paintCanvas.getContext("2d");
+    if (context && drawingStack.length >= 2) {
+      context.putImageData(drawingStack[drawingStack.length - 2], 0, 0);
+      setUndoStack((prevUndoStack) => [
+        ...prevUndoStack,
+        drawingStack[drawingStack.length - 1],
+      ]);
+      setDrawingStack([...drawingStack.slice(0, -1)]);
+    } else if (context && drawingStack.length === 1) {
+      clearCanvas();
+      setUndoStack((prevUndoStack) => [
+        ...prevUndoStack,
+        drawingStack[drawingStack.length - 1],
+      ]);
+      setDrawingStack([]);
+    }
+  };
+
+  const redoCanvas = () => {
+    const paintCanvas = document.querySelector(".js-paint");
+    const context = paintCanvas.getContext("2d");
+    if (context && undoStack.length >= 1) {
+      context.putImageData(undoStack[undoStack.length - 1], 0, 0);
+      setDrawingStack((prevDrawingStack) => [
+        ...prevDrawingStack,
+        undoStack[undoStack.length - 1],
+      ]);
+      setUndoStack([...undoStack.slice(0, -1)]);
     }
   };
 
@@ -146,7 +208,7 @@ function Canvas(props) {
 
       // Convert the canvas to a data URL representing the image
       if (selectedFileType === "pdf") {
-        const imageDataURL = canvas.toDataURL("image/jepg");
+        const imageDataURL = canvas.toDataURL("image/jpeg");
         // Create a new jsPDF instance with landscape orientation
         const pdf = new jsPDF("landscape");
 
@@ -184,50 +246,78 @@ function Canvas(props) {
     });
   };
 
+  const printCanvas = () => {
+    const canvas = document.getElementById("paint-canvas");
+
+    // Print canvas content
+    var printWindow = window.open("", "_blank");
+    printWindow.document.open();
+    printWindow.document.write(
+      "<html><head><title>DTR Canvas</title></head><body>"
+    );
+    printWindow.document.write(
+      '<img src="' + canvas.toDataURL() + '" style="width:100%;">'
+    );
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    setTimeout(() => printWindow.print(), 500);
+  };
+
   return (
     <>
-      <AppHeader setPageValue={props.setPageValue} title="Drawing Canvas" />
-      <div classname="row">
-        <div className="col-md-12">
-          <input
-            data-testid="color-picker"
-            type="color"
-            className="js-color-picker  color-picker me-2"
-            aria-label="Select color"
-          />
-          <input
-            type="range"
-            id="pixel-size-picker"
-            className="js-line-range"
-            min="1"
-            max="80"
-            defaultValue={"1"}
-            aria-label="Select pixel size"
-          />
-          <label
-            className="js-range-value ms-1 me-3"
-            htmlFor="pixel-size-picker"
-          >
-            1 px
-          </label>
-          <Button children={"Clear"} onClick={clearCanvas} />
-          <Button
-            className="mx-3"
-            children={"Save"}
-            onClick={() => setShowModal(true)}
-          />
+      <AppBackground />
+      <div style={{ position: "relative" }}>
+        <div className="row" style={{ marginTop: "20vh" }}>
+          <div className="col-md-12">
+            <input
+              data-testid="color-picker"
+              type="color"
+              className="js-color-picker  color-picker me-2"
+              aria-label="Select color"
+            />
+            <input
+              type="range"
+              id="pixel-size-picker"
+              className="js-line-range"
+              min="1"
+              max="80"
+              defaultValue={"1"}
+              aria-label="Select pixel size"
+            />
+            <label
+              className="js-range-value ms-1 me-3"
+              htmlFor="pixel-size-picker"
+            >
+              1 px
+            </label>
+            <Button children={<>Clear &#128465;</>} onClick={clearCanvas} />
+            <Button children={<>Undo &#8617;</>} onClick={undoCanvas} />
+            <Button children={<>Redo &#8618;</>} onClick={redoCanvas} />
+            <Button
+              children={<>Save &#128190;</>}
+              onClick={() => setShowModal(true)}
+            />
+            <Button children={<>Print &#128424;</>} onClick={printCanvas} />
+          </div>
         </div>
-      </div>
-      <div className="row p-0">
-        <div className="col-md-12 p-0">
-          <canvas
-            id="paint-canvas"
-            data-testid="paint-canvas"
-            className="js-paint  paint-canvas"
-            draggable="false"
-            aria-label="Monster drawing area"
-            role="img"
-          ></canvas>
+        <div className="row p-0">
+          <div className="col-md-12 p-0">
+            <canvas
+              id="paint-canvas"
+              data-testid="paint-canvas"
+              className="js-paint  paint-canvas"
+              draggable="false"
+              aria-label="Monster drawing area"
+              role="img"
+            ></canvas>
+          </div>
+          <button className="button back_button" onClick={() => navigate("/")}>
+            <i
+              className="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+            Back
+          </button>
         </div>
       </div>
       {showModal && (

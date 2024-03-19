@@ -1,0 +1,107 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+:root{
+    --primary: #3e6eb4;
+    --secondary: #3abff0;
+    --tertiary: #6dc6da;
+    --input_color: #BFE3EE;
+}
+
+body{
+    background: white;
+}
+
+.login{
+    position: absolute;
+    top: 30vh;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo_centeral{
+    position: relative;
+    width: 500px;
+    right: 40px;
+    margin-bottom: 40px;
+}
+
+.logo_top_right{
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    width: 500px;
+}
+
+.login_top_branding{
+    top: -4px !important;
+    width: 60% !important;
+    height: 42% !important;
+}
+
+.login_bottom_branding{
+    bottom: -75px !important;
+}
+
+.top_branding{
+    position: absolute;
+    left: 0;
+    top: -4px;
+    width: 50%;
+    height: 28%;
+    opacity: 0.15;
+}
+
+.bottom_branding{
+    position: fixed;
+    right: 0;
+    bottom: 1px;
+    width: 62%;
+    opacity: 0.15;
+}
+
+.input_display{
+    display: grid;
+    margin-bottom: 20px;
+}
+
+.input_display label{
+    margin-bottom: 5px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.user_input{
+    padding: 20px;
+    background-color: var(--input_color);
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.login_buttons{
+    display: flex;
+    min-width: 105%;
+}
+
+.button{
+    padding: 15px;
+    color: #fff;
+    background-color: var(--primary);
+    border-radius: 10px;
+    border: none;
+    margin-right: 20px;
+    margin-top: 30px;
+    min-width: 208px;
+    font-size: 20px;
+}
+
+.button:hover{
+    cursor: pointer;
+}

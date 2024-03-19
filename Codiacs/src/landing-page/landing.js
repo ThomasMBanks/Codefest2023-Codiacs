@@ -1,197 +1,116 @@
+import { useNavigate } from "react-router-dom";
+
 import "./landing.css";
-// import "./font_size.js";
-function LandingPage(props) {
+import AppBackground from "../AppBackground";
+
+function LandingPage() {
+  const navigate = useNavigate();
+
   return (
-    <div className="container">
-      <div className="profile">
-        {/* <img className="butterfly_speech" src="img/butterfly_speech.jpg"></img> */}
-        {/* <div id="butterfly">
-          <div className="wing wingl">
-            <div id="leftwing">
-              <div id="lwtop"></div>
-              <div id="lwbottom"></div>
-            </div>
-          </div>
+    <>
+      <AppBackground />
+      {/* <div class="background_branding">
+        <div><img src={listetingEarLogoTop} class="top_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+        <div><img src={listetingEarLogoBottom} class="bottom_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+        <div><img src={listetingEarLogoTopRight} class="logo_top_right" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+      </div> */}
 
-          <div className="wing wingr">
-            <div id="rightwing" className="">
-              <div id="rwtop"></div>
-              <div id="rwbottom"></div>
-            </div>
-          </div>
-
-          <div id="body"></div>
-
-          <div id="leftant">
-            <div className="ball"></div>
-          </div>
-          <div id="rightant">
-            <div className="ball"></div>
-          </div>
-        </div> */}
+      <div class="menu">
         <div>
-          <div id="profile_page" className="modal">
-            <div className="modal-content">
-              <span className="close">&times;</span>
-
-              <div className="favourite_color">
-                <h1>Pick Your Favourite Color</h1>
-                <input type="color" id="fav_color"></input>
-              </div>
-
-              <div className="background_color">
-                <h1>Background Color</h1>
-                <input type="color" id="background_color"></input>
-              </div>
-
-              <div className="Font_Control">
-                <h1>Font Color</h1>
-                <input type="color" id="font_color"></input>
-                <h1>Font Size</h1>
-                <div className="font_size">
-                  <button
-                    role="button"
-                    id="decreasetext"
-                    // onClick={decreaseText}
-                  >
-                    {" "}
-                    <span>smaller</span>
-                  </button>
-                  <button
-                    role="button"
-                    id="resettext"
-                    // onClick={resetText}
-                  >
-                    <span>normal</span>
-                  </button>
-                  <button
-                    role="button"
-                    id="increasetext"
-                    //  onClick={increaseText}
-                  >
-                    <span>bigger</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>{" "}
-          <img
-            src="img/LISTENING EAR CMYK.jpg"
-            alt="Listening Ear logo"
-            style={{ width: "100%" }}
-            className="my-3"
-          />
+          <h2>Welcome Matt</h2>
         </div>
-
-        <div className="welcome_message">
-          <h1>
-            Welcome <span>Matt</span>
-          </h1>
-        </div>
-        <div className="row">
-          <div
-            className="Game col"
-            onClick={() => props.setPageValue("memory-jar")}
-          >
-            <div href="">
-              <div className="content">
-                <div className="image" id="Memory_Jar">
-                  <img
-                    src="img/MemoryJar2.png"
-                    alt="Memory Jar"
-                    style={{ minHeight: "100px" }}
-                  />
-                </div>
-
-                <div className="text">
-                  <p className="name" style={{ top: "93px" }}>
-                    Memory Jar
+        <div class="menu_row">
+          <div class="col">
+            <button onClick={() => navigate("memory-jar")}>
+              <div class="game_card memory_jar">
+                <div class="card_contents">
+                  <h3>Memory Jar</h3>
+                  <p>
+                    Create your own memory jar filled with memories, thoughts
+                    and feelings for the person who has died. Choose individual
+                    colours to represent the memory, thought or feeling that you
+                    would like to see within your jar.{" "}
                   </p>
                 </div>
               </div>
-            </div>
+              <h3>Memory Jar</h3>
+            </button>
           </div>
-          <div
-            className="Game col"
-            id="canvas_load"
-            onClick={() => props.setPageValue("canvas")}
-          >
-            <div href="">
-              <div className="content">
-                <div className="image" id="Canvas">
-                  <img
-                    src="img/canvas.png"
-                    alt="Canvas"
-                    style={{ minHeight: "100px" }}
-                  />
-                </div>
-
-                <div className="text">
-                  <p className="name">Canvas</p>
+          <div class="col">
+            <button onClick={() => navigate("canvas")}>
+              <div class="game_card canvas">
+                <div class="card_contents">
+                  <h3>Canvas</h3>
+                  <p>
+                    Use this blank canvas to express your thoughts, feelings and
+                    emotions
+                  </p>
                 </div>
               </div>
-            </div>
+              <h3>Canvas</h3>
+            </button>
           </div>
-          <div
-            className="Game col"
-            onClick={() => props.setPageValue("volcano")}
-          >
-            <div href="">
-              <div className="content">
-                <div className="image volcano">
-                  <img
-                    src="img/volcano.png"
-                    alt="Volcano"
-                    style={{ minHeight: "100px" }}
-                  />
-                </div>
-
-                <div className="text">
-                  <p className="name">Volcano</p>
+          <div class="col">
+            <button onClick={() => navigate("emotion-volcano")}>
+              <div class="game_card volcano">
+                <div class="card_contents">
+                  <h3>Volcano</h3>
+                  <p>
+                    We all have thoughts and feelings and sometimes they can
+                    feel like they are bubbling away like a volcano. Use the
+                    volcano to try and name the feelings and thoughts that you
+                    have.
+                  </p>
                 </div>
               </div>
-            </div>
+              <h3>Volcano</h3>
+            </button>
           </div>
-          <div
-            className="Game col"
-            onClick={() => props.setPageValue("monster")}
-          >
-            <div href="">
-              <div className="content">
-                <div className="image">
-                  <img
-                    src="img/monster_animated.jpg"
-                    alt="worry monster"
-                    style={{ maxHeight: "210px", maxWidth: "175px" }}
-                  />
-                </div>
-
-                <div className="text">
-                  <p className="name">Worry Monster</p>
+          <div class="col">
+            <button onClick={() => navigate("worry-monster")}>
+              <div class="game_card worry_monster">
+                <div class="card_contents">
+                  <h3>Worry Monster</h3>
+                  <p>
+                    Sometimes it's hard to talk about our worries and it can
+                    help to write them down or draw them instead. You can use
+                    our Worry Monster to put your worries inside. It can help to
+                    think about who you can talk to about your worries and who
+                    else you feel safe sharing them with.
+                  </p>
                 </div>
               </div>
-            </div>
+              <h3>Worry Monster</h3>
+            </button>
           </div>
-          <div className="Game col" onClick={() => props.setPageValue("emdr")}>
-            <div href="">
-              <div className="content">
-                <div className="image">
-                  <img
-                    src="img/emdr.png"
-                    alt="emdr"
-                    style={{ minHeight: "100px" }}
-                  />
-                </div>
-
-                <div className="text">
-                  <p className="name">EMDR</p>
+          <div class="col">
+            <button onClick={() => navigate("emdr")}>
+              <div class="game_card emdr">
+                <div class="card_contents">
+                  <h3>Cloud EMDR</h3>
+                  <p>
+                    This involves moving your eyes a specific way while you
+                    process traumatic memories. EMDR's goal is to help you heal
+                    from trauma or other distressing life experiences.
+                  </p>
                 </div>
               </div>
-            </div>
+              <h3>Cloud EMDR</h3>
+            </button>
           </div>
         </div>
+        <button
+          className="button back_button"
+          onClick={() => navigate("login")}
+        >
+          <i
+            className="fas_back_arrow fa-solid fa-arrow-left"
+            alt="back button"
+          ></i>
+          Logout
+        </button>
       </div>
-    </div>
+    </>
   );
 }
 export default LandingPage;

@@ -4,6 +4,7 @@
   margin: 1rem;
   cursor: crosshair;
   width: 95%;
+  background-color: white;
 }
 
 .color-picker {

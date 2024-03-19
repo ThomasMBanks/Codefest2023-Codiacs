@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import AppHeader from "../AppHeader";
+import { useNavigate } from "react-router-dom";
+import AppBackground from "../AppBackground";
 import "./MonsterPage.css";
 import Button from "../components/Button/Button.tsx";
 
-function MonsterPage(props) {
+function MonsterPage() {
   const [isEating, setIsEating] = useState(false);
   const [isText, setIsText] = useState(false);
   const [isDrawing, setIsDrawing] = useState(true);
@@ -11,6 +12,8 @@ function MonsterPage(props) {
   const [monstersName, setMonstersName] = useState("");
   const [isDraggable, setIsDraggable] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
+
+  const navigate = useNavigate();
 
   let burp = new Audio("burp-37726.mp3");
   const lightBlueHex = "#50c7f2";
@@ -81,11 +84,19 @@ function MonsterPage(props) {
           paintCanvas.addEventListener("mousemove", drawLine);
           paintCanvas.addEventListener("mouseup", stopDrawing);
           paintCanvas.addEventListener("mouseout", stopDrawing);
+          paintCanvas.addEventListener("touchstart", startDrawing);
+          paintCanvas.addEventListener("touchmove", drawLine);
+          paintCanvas.addEventListener("touchend", stopDrawing);
+          paintCanvas.addEventListener("touchcancel", stopDrawing);
         } else {
           paintCanvas.removeEventListener("mousedown", startDrawing);
           paintCanvas.removeEventListener("mousemove", drawLine);
           paintCanvas.removeEventListener("mouseup", stopDrawing);
           paintCanvas.removeEventListener("mouseout", stopDrawing);
+          paintCanvas.removeEventListener("touchstart", startDrawing);
+          paintCanvas.removeEventListener("touchmove", drawLine);
+          paintCanvas.removeEventListener("touchend", stopDrawing);
+          paintCanvas.removeEventListener("touchcancel", stopDrawing);
         }
 
         // Clean up event listeners when the component unmounts
@@ -94,6 +105,10 @@ function MonsterPage(props) {
           paintCanvas.removeEventListener("mousemove", drawLine);
           paintCanvas.removeEventListener("mouseup", stopDrawing);
           paintCanvas.removeEventListener("mouseout", stopDrawing);
+          paintCanvas.removeEventListener("touchstart", startDrawing);
+          paintCanvas.removeEventListener("touchmove", drawLine);
+          paintCanvas.removeEventListener("touchend", stopDrawing);
+          paintCanvas.removeEventListener("touchcancel", stopDrawing);
           window.removeEventListener("resize", updateCanvasSize);
         };
       }
@@ -195,14 +210,14 @@ function MonsterPage(props) {
 
   return (
     <>
-      <AppHeader setPageValue={props.setPageValue} title={"Worry Monster"} />
+      <AppBackground />
       <div className="m-4">
-        <div className="row">
+        <div className="row" style={{ position: "relative", top: "20vh" }}>
           <div className="col-md-8 p-1">
             {nameSubmitted ? (
               <>
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-md-4">
                     <div className="form-check form-check-inline">
                       <input
                         className="form-check-input"
@@ -238,7 +253,7 @@ function MonsterPage(props) {
                       </label>
                     </div>
                   </div>
-                  <div className="col-md-6" hidden={!isDrawing}>
+                  <div className="col-md-8" hidden={!isDrawing}>
                     <input
                       data-testid="color-picker"
                       type="color"
@@ -260,7 +275,11 @@ function MonsterPage(props) {
                     >
                       1 px
                     </label>
-                    <Button children={"Clear"} onClick={clearCanvas} />
+                    <Button
+                      children={"Clear"}
+                      onClick={clearCanvas}
+                      style={{ marginTop: "0px" }}
+                    />
                   </div>
                 </div>
                 <div className="row p-0" hidden={!isDrawing}>
@@ -408,6 +427,13 @@ function MonsterPage(props) {
             )}
           </div>
         </div>
+        <button className="button back_button" onClick={() => navigate("/")}>
+          <i
+            className="fas_back_arrow fa-solid fa-arrow-left"
+            alt="back button"
+          ></i>
+          Back
+        </button>
       </div>
     </>
   );
