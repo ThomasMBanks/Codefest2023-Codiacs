@@ -22,6 +22,7 @@ function UnusedEmotions(props) {
           <Button
             key={word}
             className="unused-emotion"
+            data-testid={word}
             draggable
             onDragStart={(e) => handleOnDrag(e, word)}
             onKeyDown={(e) => handleClick(e, word)}

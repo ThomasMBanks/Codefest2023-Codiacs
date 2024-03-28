@@ -4,6 +4,7 @@
   margin: 1rem;
   cursor: crosshair;
   width: 95%;
+  height: auto;
   background-color: white;
 }
 

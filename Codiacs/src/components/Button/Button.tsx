@@ -28,6 +28,7 @@ function Button({
   return (
     <button
       className={buttonClass}
+      data-testid={children}
       onClick={onClick && (() => onClick())}
       {...props}
     >

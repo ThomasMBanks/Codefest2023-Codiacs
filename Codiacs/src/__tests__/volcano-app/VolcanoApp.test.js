@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import VolcanoApp from "../../volcano-app/VolcanoApp.js";
 
 const mockUseNavigate = jest.fn();
@@ -142,5 +143,119 @@ describe("Volcano app page", () => {
     render(<VolcanoApp />);
 
     expect(mockAudioPlay).toHaveBeenCalledTimes(0);
+  });
+
+  it("should trigger the 'Rate Your Emotion' modal when an item is dropped into the volcano", () => {
+    render(<VolcanoApp />);
+
+    const volcano = screen.getByTestId("volcano-image");
+    fireEvent.drop(volcano, { dataTransfer: { getData: () => "happy" } });
+
+    expect(screen.getByText("Rate Your Emotion")).toBeTruthy();
+  });
+
+  it("should increase the progress bar a little when emotions are rated low", () => {
+    render(<VolcanoApp />);
+
+    const volcano = screen.getByTestId("volcano-image");
+    fireEvent.drop(volcano, { dataTransfer: { getData: () => "happy" } });
+
+    const rating = screen.getByTestId("rating-1");
+    const submitButton = screen.getByText("Go");
+    fireEvent.click(rating);
+    fireEvent.click(submitButton);
+
+    expect(screen.getByTestId("progress").classList.contains("bg-success")).toBeTruthy;
+    expect(screen.getByTestId("progress").classList.contains("bg-warning")).toBeFalsy;
+  });
+
+  it("should increase the progress bar a lot when emotions are rated highly", () => {
+    render(<VolcanoApp />);
+
+    const volcano = screen.getByTestId("volcano-image");
+    fireEvent.drop(volcano, { dataTransfer: { getData: () => "happy" } });
+
+    const rating = screen.getByTestId("rating-10");
+    const submitButton = screen.getByText("Go");
+    fireEvent.click(rating);
+    fireEvent.click(submitButton);
+
+    expect(screen.getByTestId("progress").classList.contains("bg-warning")).toBeTruthy;
+    expect(screen.getByTestId("progress").classList.contains("bg-success")).toBeFalsy;
+  });
+
+  it("should set the rating on mouse enter", () => {
+    render(<VolcanoApp />);
+
+    const volcano = screen.getByTestId("volcano-image");
+    fireEvent.drop(volcano, { dataTransfer: { getData: () => "happy" } });
+
+    const rating = screen.getByTestId("rating-10");
+    const submitButton = screen.getByText("Go");
+    fireEvent.mouseEnter(rating);
+    fireEvent.mouseLeave(rating);
+    fireEvent.click(submitButton);
+
+    expect(screen.getByTestId("progress").classList.contains("bg-warning")).toBeTruthy;
+    expect(screen.getByTestId("progress").classList.contains("bg-success")).toBeFalsy;
+  });
+
+  it("should be usable via keyboard", () => {
+    render(<VolcanoApp />);
+
+    const emotion = screen.getByTestId("happy");
+    emotion.focus();
+    act(() => userEvent.keyboard('[Enter]'))
+
+    const rating = screen.getByTestId("rating-1");
+    rating.focus();
+    act(() => userEvent.keyboard('[Enter]'))
+
+    for (let i = 0; i < 5; ++i) {
+      userEvent.tab();
+    }
+    
+    const newRating = screen.getByTestId("rating-6")
+    expect(newRating).toHaveFocus();
+
+    for (let i = 0; i < 5; ++i) {
+      userEvent.tab();
+    }
+
+    const submitButton = screen.getByTestId("Go");
+    expect(submitButton).toHaveFocus();
+    act(() => userEvent.keyboard('[Enter]'))
+
+    expect(screen.getByTestId("progress").classList.contains("bg-success")).toBeTruthy;
+    expect(screen.getByTestId("progress").classList.contains("bg-warning")).toBeFalsy;
+  });
+
+  it("should trap keyboard focus on modal content", async () => {
+    render(<VolcanoApp />);
+
+    const emotion = screen.getByTestId("happy");
+    emotion.focus();
+    act(() => userEvent.keyboard('[Enter]'))
+
+    const rating = screen.getByTestId("rating-1");
+    expect(rating).toBeTruthy();
+    // the first rating circle does automatically get focus in the browser but the test isn't picking this up
+    // so I have manually focused the content
+    rating.focus();
+
+    for (let i = 0; i < 9; i++) {
+      userEvent.tab();
+    }
+    
+    const newRating = screen.getByTestId("rating-10")
+    expect(newRating).toHaveFocus();
+
+    userEvent.tab();
+    const submitButton = screen.getByTestId("Go");
+    expect(submitButton).toHaveFocus();
+
+    // here we show that the keyboard focus is trapped within the modal
+    userEvent.tab();
+    expect(rating).toHaveFocus();
   });
 });

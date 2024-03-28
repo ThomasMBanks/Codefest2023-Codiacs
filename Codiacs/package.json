@@ -4,9 +4,7 @@
   "private": true,
   "dependencies": {
     "@adobe/css-tools": ">=4.3.2",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "focus-trap-react": "^10.2.3",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
     "jspdf": "^2.5.1",
@@ -44,6 +42,9 @@
   },
   "devDependencies": {
     "canvas": "^2.11.2",
-    "jest-canvas-mock": "^2.5.2"
+    "jest-canvas-mock": "^2.5.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0"
   }
 }
