@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@adobe/css-tools": ">=4.3.2",
+    "emoji-picker-react": "^4.9.2",
     "focus-trap-react": "^10.2.3",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
@@ -41,10 +42,10 @@
     ]
   },
   "devDependencies": {
-    "canvas": "^2.11.2",
-    "jest-canvas-mock": "^2.5.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0"
+    "@testing-library/user-event": "^13.5.0",
+    "canvas": "^2.11.2",
+    "jest-canvas-mock": "^2.5.2"
   }
 }

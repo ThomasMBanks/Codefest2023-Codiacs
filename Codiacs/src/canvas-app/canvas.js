@@ -6,6 +6,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Modal from "../components/Modal/Modal.tsx";
 import AppBackground from "../AppBackground";
+import EmojiPicker from "emoji-picker-react";
 
 const fontFamilies = [
   "Arial",
@@ -43,17 +44,19 @@ function Canvas() {
   const [strokeStyle, setStrokeStyle] = useState("");
   const [lineWidth, setLineWidth] = useState("");
 
-  const handleFileTypeChange = (event) => {
-    setSelectedFileType(event.target.value);
-  };
+  // Add event listener to window's resize event
+  window.addEventListener("resize", updateCanvasSize);
 
   useEffect(() => {
     // Initial call to set canvas size based on initial window size
     updateCanvasSize();
 
-    // Add event listener to window's resize event
-    window.addEventListener("resize", updateCanvasSize);
+    return () => {
+      window.removeEventListener("resize", updateCanvasSize);
+    };
+  }, []);
 
+  useEffect(() => {
     const paintCanvas = document.querySelector(".js-paint");
     const context = paintCanvas.getContext("2d");
     if (context) {
@@ -93,12 +96,13 @@ function Canvas() {
 
         //   setIsApplyingText(false);
         // }
-
-        setDrawingStack((prevDrawingStack) => [
-          ...prevDrawingStack,
-          ctx.getImageData(0, 0, canvas.width, canvas.height),
-        ]);
-        setUndoStack([]);
+        if (!isApplyingText) {
+          setDrawingStack((prevDrawingStack) => [
+            ...prevDrawingStack,
+            ctx.getImageData(0, 0, canvas.width, canvas.height),
+          ]);
+          setUndoStack([]);
+        }
       };
       const stopDrawingMouseOut = () => {
         isMouseDown = false;
@@ -108,7 +112,7 @@ function Canvas() {
         [x, y] = [event.offsetX, event.offsetY];
       };
       const drawLine = (event) => {
-        if (isMouseDown) {
+        if (isMouseDown && !isApplyingText) {
           const newX = event.offsetX;
           const newY = event.offsetY;
           context.beginPath();
@@ -140,10 +144,9 @@ function Canvas() {
         paintCanvas.removeEventListener("touchmove", drawLine);
         paintCanvas.removeEventListener("touchend", stopDrawing);
         paintCanvas.removeEventListener("touchcancel", stopDrawingMouseOut);
-        window.removeEventListener("resize", updateCanvasSize);
       };
     }
-  }, []);
+  }, [isApplyingText]);
 
   const handleCanvasClick = (event) => {
     if (isApplyingText) {
@@ -163,13 +166,17 @@ function Canvas() {
       ]);
       setUndoStack([]);
 
-      setIsApplyingText(false);
+      //setIsApplyingText(false);
     }
   };
 
   const handlePenColourChange = (event) => {
-    handleEraserClick(false);
+    //handleEraserClick(false);
     setPenColour(event.target.value);
+  };
+
+  const handleFileTypeChange = (event) => {
+    setSelectedFileType(event.target.value);
   };
 
   // Function to update canvas size based on CSS width and height
@@ -201,16 +208,35 @@ function Canvas() {
       context.lineWidth = lineWidth;
       context.strokeStyle = strokeStyle;
       context.lineCap = "round";
+
+      if (drawingStack.length > 0)
+        setTimeout(
+          () =>
+            context.putImageData(drawingStack[drawingStack.length - 1], 0, 0),
+          100
+        );
     }
   }
 
-  const handleEraserClick = (value = null) => {
+  const handlePenClick = (value = null) => {
+    setIsApplyingText(false);
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     if (context) {
       context.globalCompositeOperation =
-        value ?? !isErasing ? "destination-out" : "source-over";
-      setIsErasing(value ?? !isErasing);
+        value ?? false ? "destination-out" : "source-over";
+      setIsErasing(value ?? false);
+    }
+  };
+
+  const handleEraserClick = (value = null) => {
+    setIsApplyingText(false);
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.globalCompositeOperation =
+        value ?? true ? "destination-out" : "source-over";
+      setIsErasing(value ?? true);
     }
   };
 
@@ -269,6 +295,11 @@ function Canvas() {
         context.lineWidth = lineWidth;
         context.strokeStyle = strokeStyle;
         context.lineCap = "round";
+        setTimeout(
+          () =>
+            context.putImageData(drawingStack[drawingStack.length - 1], 0, 0),
+          100
+        );
       } else {
         if (
           canvas.style.backgroundImage &&
@@ -303,6 +334,10 @@ function Canvas() {
     handleEraserClick(false);
     setShowTextModal(false);
     setIsApplyingText(true);
+  };
+
+  const handleEmojiClick = (emojiObj) => {
+    setText((prevText) => prevText + emojiObj.emoji);
   };
 
   const clearCanvas = () => {
@@ -440,11 +475,22 @@ function Canvas() {
       <div style={{ position: "relative" }}>
         <div className="row" style={{ marginTop: "20vh" }}>
           <div className="col-md-12">
+            <span className="ms-1">
+              Current:
+              <b>
+                {" " +
+                  (isApplyingText
+                    ? "Text & Emojis"
+                    : isErasing
+                    ? "Eraser"
+                    : "Pen")}
+              </b>
+            </span>
             <input
               data-testid="color-picker"
               type="color"
-              className="js-color-picker  color-picker me-2"
-              aria-label="Select color"
+              className="js-color-picker color-picker me-2"
+              aria-label="Select colour"
               value={penColour}
               onChange={handlePenColourChange}
             />
@@ -464,21 +510,26 @@ function Canvas() {
               1 px
             </label>
             <Button
-              children={
-                isErasing ? <>Pen &#x1F58C;&#xFE0F;</> : <>Eraser &#x1F9F9;</>
-              }
-              onClick={handleEraserClick}
-              aria-label={isErasing ? "Use pen tool" : "Use eraser tool"}
+              children={<>Pen &#x1F58C;&#xFE0F;</>}
+              onClick={handlePenClick}
+              disabled={!isErasing && !isApplyingText}
+              aria-label={"Use pen tool"}
             />
             <Button
-              children={<>Set background &#128444;&#65039;</>}
+              children={<>Eraser &#x1F9F9;</>}
+              onClick={handleEraserClick}
+              disabled={isErasing}
+              aria-label={"Use eraser tool"}
+            />
+            <Button
+              children={<>Text & Emojis &#128512;</>}
+              onClick={handleInsertTextClick}
+              aria-label="Insert text and emojis"
+            />
+            <Button
+              children={<>Background &#128444;&#65039;</>}
               onClick={() => setShowBackgroundModal(true)}
               aria-label="Set canvas background"
-            />
-            <Button
-              children={<>Insert text &#x1F143;</>}
-              onClick={handleInsertTextClick}
-              aria-label="Insert text"
             />
             <Button
               children={<>Clear &#128465;</>}
@@ -554,7 +605,7 @@ function Canvas() {
           <label htmlFor="backgroundColourInput" className="form-label">
             Choose a background colour
           </label>
-          <div className="text-center">
+          <div>
             <input
               type="color"
               className="mb-2"
@@ -581,7 +632,7 @@ function Canvas() {
       )}
       {showTextModal && (
         <Modal
-          heading="Text"
+          heading="Text & Emojis"
           footer={
             <Button light onClick={handleTextModalApply}>
               Apply
@@ -591,18 +642,25 @@ function Canvas() {
           onClose={() => setShowTextModal(false)}
         >
           <label htmlFor="textInput" className="form-label">
-            Enter text
+            Enter text & emojis
           </label>
           {/* Text input for entering text */}
           <input
             type="text"
-            className="form-control mb-2"
+            className="form-control mb-1"
             id="textInput"
             value={text}
             onChange={handleTextChange}
             placeholder="Enter text"
             aria-label="Enter text"
           />
+          <div className="text-center mb-2">
+            <EmojiPicker
+              onEmojiClick={handleEmojiClick}
+              reactionsDefaultOpen={true}
+              emojiStyle="native"
+            />
+          </div>
           <label htmlFor="fontSelect" className="form-label">
             Select font
           </label>
@@ -614,8 +672,8 @@ function Canvas() {
             onChange={handleFontFamilyChange}
             aria-label="Select font"
           >
-            {fontFamilies.map((v) => (
-              <option style={{ fontFamily: v }} value={v}>
+            {fontFamilies.map((v, i) => (
+              <option key={i} style={{ fontFamily: v }} value={v}>
                 {v}
               </option>
             ))}
@@ -627,6 +685,7 @@ function Canvas() {
           <input
             type="range"
             id="fontSizeInput"
+            style={{ accentColor: "#50c7f2" }}
             min="1"
             max="100"
             value={fontSize}
@@ -636,7 +695,17 @@ function Canvas() {
           <label className="mb-2" htmlFor="fontSizeInput">
             {fontSize}
           </label>
-          <p>
+          <p>Preview:</p>
+          <span
+            style={{
+              fontSize: fontSize,
+              fontFamily: fontFamily,
+              color: penColour,
+            }}
+          >
+            {text}
+          </span>
+          <p className="mt-1">
             After clicking apply below, select somewhere on the canvas for the
             text to appear.
           </p>

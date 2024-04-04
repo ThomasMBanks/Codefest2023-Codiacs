@@ -17,6 +17,7 @@ function AppBackground(props) {
                 className="top_branding"
                 alt="Listening Ear Logo"
                 aria-label="Listening Ear Logo"
+                draggable={false}
               />
             </div>
 
@@ -26,6 +27,7 @@ function AppBackground(props) {
                 className="bottom_branding"
                 alt="Listening Ear Logo"
                 aria-label="Listening Ear Logo"
+                draggable={false}
               />
             </div>
           </>
@@ -36,6 +38,7 @@ function AppBackground(props) {
             className="logo_top_right"
             alt="Listening Ear Logo"
             aria-label="Listening Ear Logo"
+            draggable={false}
           />
         </div>
       </div>

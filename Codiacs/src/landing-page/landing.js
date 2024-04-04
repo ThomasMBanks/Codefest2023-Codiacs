@@ -87,7 +87,7 @@ function LandingPage() {
             <button onClick={() => navigate("emdr")}>
               <div class="game_card emdr">
                 <div class="card_contents">
-                  <h3>Cloud EMDR</h3>
+                  <h3>EMDR</h3>
                   <p>
                     This involves moving your eyes a specific way while you
                     process traumatic memories. EMDR's goal is to help you heal
@@ -95,7 +95,7 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>Cloud EMDR</h3>
+              <h3>EMDR</h3>
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@ function LandingPage() {
             className="fas_back_arrow fa-solid fa-arrow-left"
             alt="back button"
           ></i>
-          Logout
+          Log out
         </button>
       </div>
     </>
