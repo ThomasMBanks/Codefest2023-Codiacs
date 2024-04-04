@@ -208,6 +208,9 @@ function Canvas() {
       context.lineWidth = lineWidth;
       context.strokeStyle = strokeStyle;
       context.lineCap = "round";
+      context.globalCompositeOperation = isErasing
+        ? "destination-out"
+        : "source-over";
 
       if (drawingStack.length > 0)
         setTimeout(
