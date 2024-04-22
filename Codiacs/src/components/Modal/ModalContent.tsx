@@ -6,6 +6,7 @@ import Button from "../Button/Button.tsx";
 
 export interface ModalContentProps {
   heading: string;
+  subheading?: string;
   children: React.ReactNode;
   footer: React.ReactNode;
   noClose?: true | undefined;
@@ -14,6 +15,7 @@ export interface ModalContentProps {
 
 function ModalContent({
   heading,
+  subheading,
   children,
   footer,
   noClose,
@@ -31,8 +33,11 @@ function ModalContent({
             />
           </div>
         )}
+        <div className="headings">
         <h1>{heading}</h1>
-        {children}
+          <h2>{subheading}</h2>
+      </div>
+      {children}
         <div className="modal-footer">{footer}</div>
       </div>
     </FocusTrap>

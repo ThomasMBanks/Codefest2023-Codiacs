@@ -5,6 +5,7 @@ import "./Modal.css";
 
 export interface ModalComponentProps {
   heading: string;
+  subheading?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
   noClose?: true | undefined;
@@ -13,6 +14,7 @@ export interface ModalComponentProps {
 
 function Modal({
   heading,
+  subheading,
   children,
   footer,
   noClose,
@@ -23,6 +25,7 @@ function Modal({
       {createPortal(
         <ModalContent
           heading={heading}
+          subheading={subheading}
           footer={footer}
           noClose={noClose}
           onClose={onClose}

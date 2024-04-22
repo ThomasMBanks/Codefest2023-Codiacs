@@ -99,16 +99,15 @@ function LandingPage() {
             </button>
           </div>
         </div>
-        <button
-          className="button back_button"
-          onClick={() => navigate("login")}
-        >
-          <i
-            className="fas_back_arrow fa-solid fa-arrow-left"
-            alt="back button"
-          ></i>
-          Log out
-        </button>
+        <div class="back_button_container">
+          <button class="sign_out_button" onClick={() => navigate("login")}>
+            <i
+              class="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+            <p>Log out</p>
+          </button>
+        </div>
       </div>
     </>
   );

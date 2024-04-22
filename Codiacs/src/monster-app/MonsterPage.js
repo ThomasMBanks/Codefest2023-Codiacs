@@ -212,7 +212,7 @@ function MonsterPage() {
     <>
       <AppBackground />
       <div className="m-4">
-        <div className="row" style={{ position: "relative", top: "20vh" }}>
+        <div className="row" style={{ position: "relative" }}>
           <div className="col-md-8 p-1">
             {nameSubmitted ? (
               <>
@@ -404,7 +404,7 @@ function MonsterPage() {
             {isEating ? (
               <img
                 id=""
-                src="img/worry-eater-mouth-closed.jpeg"
+                src="img/worry-eater-mouth-closed.png"
                 alt="Worry Monster Eating"
                 className="img-fluid"
                 draggable="false"
@@ -415,7 +415,7 @@ function MonsterPage() {
               <img
                 id="dropzone"
                 data-testid="monster-hungry-img"
-                src="img/worry-eater-mouth-open.jpg"
+                src="img/worry-eater-mouth-open.png"
                 alt="Worry Monster Hungry"
                 className="img-fluid"
                 draggable="false"
@@ -427,13 +427,14 @@ function MonsterPage() {
             )}
           </div>
         </div>
-        <button className="button back_button" onClick={() => navigate("/")}>
-          <i
-            className="fas_back_arrow fa-solid fa-arrow-left"
-            alt="back button"
-          ></i>
-          Back
-        </button>
+        <div class="back_button_container">
+          <button class="back_button" onClick={() => navigate("/")}>
+            <i
+              class="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+          </button>
+        </div>
       </div>
     </>
   );

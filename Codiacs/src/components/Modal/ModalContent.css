@@ -13,8 +13,12 @@
     overflow: auto;
 }
 
-.modal-content h1 {
+.headings {
     margin-bottom: 7.5%
+}
+
+.headings h2 {
+    font-size: 24px;
 }
   
 /* The Close Button */

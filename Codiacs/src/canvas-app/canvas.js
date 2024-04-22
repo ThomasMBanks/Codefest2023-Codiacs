@@ -475,8 +475,16 @@ function Canvas() {
   return (
     <>
       <AppBackground />
+      <div class="back_button_container">
+        <button class="back_button" onClick={() => navigate("/")}>
+          <i
+            class="fas_back_arrow fa-solid fa-arrow-left"
+            alt="back button"
+          ></i>
+        </button>
+      </div>
       <div style={{ position: "relative" }}>
-        <div className="row" style={{ marginTop: "20vh" }}>
+        <div className="row">
           <div className="col-md-12">
             <span className="ms-1">
               Current:
@@ -585,13 +593,6 @@ function Canvas() {
               tabIndex="0"
             ></canvas>
           </div>
-          <button className="button back_button" onClick={() => navigate("/")}>
-            <i
-              className="fas_back_arrow fa-solid fa-arrow-left"
-              alt="back button"
-            ></i>
-            Back
-          </button>
         </div>
       </div>
       {showBackgroundModal && (

@@ -1,107 +1,117 @@
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
 }
 
-:root{
-    --primary: #3e6eb4;
-    --secondary: #3abff0;
-    --tertiary: #6dc6da;
-    --input_color: #BFE3EE;
+:root {
+  --primary: #3e6eb4;
+  --secondary: #3abff0;
+  --tertiary: #6dc6da;
+  --input_color: #bfe3ee;
 }
 
-body{
-    background: white;
+body {
+  background: white;
 }
 
-.login{
-    position: absolute;
-    top: 30vh;
-    justify-content: center;
-    width: 100%;
-    display: flex;
-    align-items: center;
+.login {
+  position: absolute;
+  top: 30vh;
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.logo_centeral{
-    position: relative;
-    width: 500px;
-    right: 40px;
-    margin-bottom: 40px;
+.logo_centeral {
+  position: relative;
+  width: 500px;
+  right: 40px;
+  margin-bottom: 40px;
 }
 
-.logo_top_right{
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    width: 500px;
+.logo_top_right {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  width: 500px;
+  z-index: 0;
 }
 
-.login_top_branding{
-    top: -4px !important;
-    width: 60% !important;
-    height: 42% !important;
+.login_top_branding {
+  top: -4px !important;
+  width: 60% !important;
+  height: 42% !important;
 }
 
-.login_bottom_branding{
-    bottom: -75px !important;
+.login_bottom_branding {
+  bottom: -75px !important;
 }
 
-.top_branding{
-    position: absolute;
-    left: 0;
-    top: -4px;
-    width: 50%;
-    height: 28%;
-    opacity: 0.15;
+.top_branding {
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 50%;
+  height: 28%;
+  opacity: 0.15;
+  z-index: 0;
 }
 
-.bottom_branding{
-    position: fixed;
-    right: 0;
-    bottom: 1px;
-    width: 62%;
-    opacity: 0.15;
+.bottom_branding {
+  position: fixed;
+  right: 0;
+  bottom: 1px;
+  width: 62%;
+  opacity: 0.15;
+  z-index: 0;
 }
 
-.input_display{
-    display: grid;
-    margin-bottom: 20px;
+.input_display {
+  display: grid;
+  margin-bottom: 20px;
 }
 
-.input_display label{
-    margin-bottom: 5px;
-    font-size: 20px;
-    text-align: left;
+.input_display label {
+  margin-bottom: 5px;
+  font-size: 20px;
+  text-align: left;
 }
 
-.user_input{
-    padding: 20px;
-    background-color: var(--input_color);
-    border: none;
-    border-radius: 10px;
-    width: 100%;
+.user_input {
+  padding: 20px;
+  background-color: var(--input_color);
+  border: none;
+  border-radius: 10px;
+  width: 100%;
 }
 
-.login_buttons{
-    display: flex;
-    min-width: 105%;
+.login_buttons {
+  display: flex;
+  min-width: 100%;
 }
 
-.button{
-    padding: 15px;
-    color: #fff;
-    background-color: var(--primary);
-    border-radius: 10px;
-    border: none;
-    margin-right: 20px;
-    margin-top: 30px;
-    min-width: 208px;
-    font-size: 20px;
+.button {
+  padding: 15px;
+  color: #fff;
+  background-color: var(--primary);
+  border-radius: 10px;
+  border: none;
+  margin-right: 20px;
+  margin-top: 30px;
+  min-width: 208px;
+  font-size: 20px;
+  /* min-width: 48%; */
 }
 
-.button:hover{
-    cursor: pointer;
+.button:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .top_branding {
+    display: none;
+  }
 }

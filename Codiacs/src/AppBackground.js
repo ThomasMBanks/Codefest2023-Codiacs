@@ -2,7 +2,7 @@ import React from "react";
 import SafewordButton from "./safe-word/SafewordButton";
 import listetingEarLogoTop from "./images/LISTENING EAR ICON CMYK TOP.jpg";
 import listetingEarLogoBottom from "./images/LISTENING_EAR_ICON_CMYK_BOTTOM.jpg";
-import listetingEarLogoTopRight from "./images/LISTENING EAR MAIN.jpg";
+import listetingEarLogoTopRight from "./images/LISTENING EAR MAIN.jpg.png";
 import "./fontawesome-free-6.5.1-web/css/all.css";
 
 function AppBackground(props) {
@@ -41,19 +41,17 @@ function AppBackground(props) {
             draggable={false}
           />
         </div>
+        <div className="col-2 text-center safeword">
+          <SafewordButton />
+        </div>
       </div>
 
       <div
         className="row"
         style={{
-          marginLeft: "2%",
-          marginTop: "2%",
+          marginTop: "6%",
         }}
-      >
-        <div className="col-2 text-center safeword">
-          <SafewordButton />
-        </div>
-      </div>
+      ></div>
     </>
   );
 }
