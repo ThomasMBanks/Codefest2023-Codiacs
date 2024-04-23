@@ -15,6 +15,11 @@ const EMDRPage = (props) => {
   const location = useLocation();
 
   useEffect(() => {
+    //reset background colour if browser's forward/backward buttons are clicked
+    return () => props.onThemeChange("white");
+  }, []);
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const urlSpeed = searchParams.get("speed");
     const urlSize = searchParams.get("size");
@@ -82,7 +87,7 @@ const EMDRPage = (props) => {
     >
       {!isPopOut ? (
         <>
-          <AppBackground EMDRTheme={theme} />
+          <AppBackground hideBackground={theme} />
           <div class="back_button_container">
             <button class="back_button" onClick={handleBackButton}>
               <i

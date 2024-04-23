@@ -124,7 +124,7 @@ function VolcanoApp() {
   return (
     <div id="volcano-app">
       {/* first we add the page header, and pass the page title as "Emotion Volcano" */}
-      {/* <AppBackground /> */}
+      <AppBackground hideBackground />
 
       {/* then we add the main page content here, using the grid system to allocate space */}
       <div className="row align-items-center" style={{ height: "80vh" }}>

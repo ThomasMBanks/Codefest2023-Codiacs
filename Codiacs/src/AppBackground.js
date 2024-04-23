@@ -9,7 +9,7 @@ function AppBackground(props) {
   return (
     <>
       <div className="background_branding">
-        {!props.EMDRTheme && (
+        {!props.hideBackground && (
           <>
             <div>
               <img
@@ -49,7 +49,7 @@ function AppBackground(props) {
       <div
         className="row"
         style={{
-          marginTop: "6%",
+          marginTop: "8%",
         }}
       ></div>
     </>
