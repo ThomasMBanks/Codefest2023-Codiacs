@@ -2,13 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 import "./landing.css";
 import AppBackground from "../AppBackground";
+import AppHeader from "../AppHeader";
+import { useState } from "react";
 
 function LandingPage() {
   const navigate = useNavigate();
+  const [usersName, setUsersName] = useState("");
 
   return (
     <>
       <AppBackground />
+      <AppHeader setUsersName={setUsersName} />
       {/* <div class="background_branding">
         <div><img src={listetingEarLogoTop} class="top_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
         <div><img src={listetingEarLogoBottom} class="bottom_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
@@ -17,7 +21,9 @@ function LandingPage() {
 
       <div class="menu">
         <div>
-          <h2>Welcome Matt</h2>
+          <h2>
+            {"Welcome " + (usersName || "to the Digital Therapy Room") + "!"}
+          </h2>
         </div>
         <div class="menu_row">
           <div class="col">
@@ -99,7 +105,7 @@ function LandingPage() {
             </button>
           </div>
         </div>
-        <div class="back_button_container">
+        {/* <div class="back_button_container">
           <button class="sign_out_button" onClick={() => navigate("login")}>
             <i
               class="fas_back_arrow fa-solid fa-arrow-left"
@@ -107,7 +113,7 @@ function LandingPage() {
             ></i>
             <p>Log out</p>
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

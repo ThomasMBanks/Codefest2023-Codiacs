@@ -5,6 +5,7 @@ import memoryJarImage from "../images/memory-jar.jpg";
 import AppBackground from "../AppBackground";
 import Memory from "./Memory";
 import "./MemoryJarApp.css";
+import AppHeader from "../AppHeader";
 
 function MemoryJarApp() {
   const [memories, setMemories] = useState([]);
@@ -58,6 +59,8 @@ function MemoryJarApp() {
   return (
     <>
       <AppBackground />
+      <AppHeader />
+      <h2>Memory Jar (under construction)</h2>
 
       <div className="row align-items-center">
         <div className="col-sm-5" style={{ paddingLeft: "2%" }}>
@@ -114,14 +117,14 @@ function MemoryJarApp() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center" }}></div>
-        <div class="back_button_container">
+        {/* <div class="back_button_container">
           <button class="back_button" onClick={() => navigate("/")}>
             <i
               class="fas_back_arrow fa-solid fa-arrow-left"
               alt="back button"
             ></i>
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

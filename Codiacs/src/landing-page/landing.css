@@ -399,6 +399,7 @@ body {
   right: 20px;
   top: 15px;
   width: 500px;
+  z-index: 1; /* Explicitly set a higher z-index */
 }
 
 .login_top_branding {
@@ -634,16 +635,16 @@ body {
 }
 
 .back_button {
-  position: absolute;
+  /* position: absolute; */
   max-width: 100px;
-  top: 2%;
-  left: 1%;
+  /* top: 2%;
+  left: 1%; */
   border-radius: 50%;
   padding: 10px;
   border: none;
   color: #fff;
   background-color: var(--primary);
-  /* z-index: -5; */
+  z-index: 1;
 }
 
 .back_button:hover {
@@ -653,6 +654,8 @@ body {
 }
 
 .fas_back_arrow {
+  position: relative; /* Ensures it is positioned above the fixed element */
+  z-index: 1; /* Explicitly set a higher z-index */
   margin: 10px;
   font-size: 2rem;
 }
@@ -664,11 +667,11 @@ body {
 }
 
 .sign_out_button {
-  position: absolute;
+  /* position: absolute; */
   display: inline-flex;
   min-width: 9vw;
-  top: 2%;
-  left: 1%;
+  /* top: 2%;
+  left: 1%; */
   padding: 4px;
   border-radius: 20px;
   border: none;

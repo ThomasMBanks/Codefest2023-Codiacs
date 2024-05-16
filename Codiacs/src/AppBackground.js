@@ -32,7 +32,7 @@ function AppBackground(props) {
             </div>
           </>
         )}
-        <div>
+        {/* <div>
           <img
             src={listetingEarLogoTopRight}
             className="logo_top_right"
@@ -43,15 +43,15 @@ function AppBackground(props) {
         </div>
         <div className="col-2 text-center safeword">
           <SafewordButton />
-        </div>
+        </div> */}
       </div>
 
-      <div
+      {/* <div
         className="row"
         style={{
-          marginTop: "8%",
+          marginTop: "9%",
         }}
-      ></div>
+      ></div> */}
     </>
   );
 }

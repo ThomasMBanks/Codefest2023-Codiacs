@@ -7,6 +7,7 @@ import jsPDF from "jspdf";
 import Modal from "../components/Modal/Modal.tsx";
 import AppBackground from "../AppBackground";
 import EmojiPicker from "emoji-picker-react";
+import AppHeader from "../AppHeader.js";
 
 const fontFamilies = [
   "Arial",
@@ -475,14 +476,16 @@ function Canvas() {
   return (
     <>
       <AppBackground />
-      <div class="back_button_container">
+      <AppHeader />
+      {/* <div class="back_button_container">
         <button class="back_button" onClick={() => navigate("/")}>
           <i
             class="fas_back_arrow fa-solid fa-arrow-left"
             alt="back button"
           ></i>
         </button>
-      </div>
+      </div> */}
+      <h2>Canvas</h2>
       <div style={{ position: "relative" }}>
         <div className="row">
           <div className="col-md-12">
