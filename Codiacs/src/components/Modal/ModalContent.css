@@ -1,47 +1,48 @@
 .modal-content {
-    position: fixed; /* positioning in center of page */
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%,-50%);
-    width: 60%;
-    max-height: 75%;
-    background-color: #3e6eb4; /* background color */
-    padding: 4%;
-    border-radius: 20px;
-    color: white;
-    text-align: center;
-    overflow: auto;
+  position: fixed; /* positioning in center of page */
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  max-height: 75%;
+  background-color: #3e6eb4; /* background color */
+  padding: 4%;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+  overflow: auto;
+  z-index: 10;
 }
 
 .headings {
-    margin-bottom: 7.5%
+  margin-bottom: 7.5%;
 }
 
 .headings h2 {
-    font-size: 24px;
+  font-size: 24px;
 }
-  
+
 /* The Close Button */
 .close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 5%;
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5%;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
-  
+
 .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .modal-footer {
-    padding-top: 10%;
-    margin-bottom: 0;
-    justify-content: center;
+  padding-top: 10%;
+  margin-bottom: 0;
+  justify-content: center;
 }

@@ -58,6 +58,7 @@ function MemoryJarApp() {
   return (
     <>
       <AppBackground />
+      <h2>Memory Jar (under construction)</h2>
 
       <div className="row align-items-center">
         <div className="col-sm-5" style={{ paddingLeft: "2%" }}>
@@ -94,7 +95,11 @@ function MemoryJarApp() {
             onChange={(e) => setMemoryToAdd(e.target.value)}
           ></textarea>
           <div className="memory_buttons">
-            <button id="memory-input-button" className="button" onClick={handleClick}>
+            <button
+              id="memory-input-button"
+              className="button"
+              onClick={handleClick}
+            >
               Add
             </button>
 
@@ -110,13 +115,14 @@ function MemoryJarApp() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center" }}></div>
-        <button
-          className="button back_button"
-          onClick={() => navigate("/")}
-          >
-            <i className="fas_back_arrow fa-solid fa-arrow-left" alt="back button"></i>
-            Back
-        </button>
+        {/* <div class="back_button_container">
+          <button class="back_button" onClick={() => navigate("/")}>
+            <i
+              class="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+          </button>
+        </div> */}
       </div>
     </>
   );

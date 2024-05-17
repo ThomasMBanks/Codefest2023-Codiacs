@@ -1,29 +1,32 @@
 import { useNavigate } from "react-router-dom";
-
 import "./landing.css";
 import AppBackground from "../AppBackground";
 
-function LandingPage() {
+function LandingPage(props) {
   const navigate = useNavigate();
 
   return (
     <>
       <AppBackground />
-      {/* <div class="background_branding">
-        <div><img src={listetingEarLogoTop} class="top_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
-        <div><img src={listetingEarLogoBottom} class="bottom_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
-        <div><img src={listetingEarLogoTopRight} class="logo_top_right" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+      {/* <div className="background_branding">
+        <div><img src={listetingEarLogoTop} className="top_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+        <div><img src={listetingEarLogoBottom} className="bottom_branding" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
+        <div><img src={listetingEarLogoTopRight} className="logo_top_right" alt="Listening Ear Logo" aria-label="Listening Ear Logo"/></div>
       </div> */}
 
-      <div class="menu">
+      <div className="menu">
         <div>
-          <h2>Welcome Matt</h2>
+          <h2>
+            {"Welcome " +
+              (props.usersName || "to the Digital Therapy Room") +
+              "!"}
+          </h2>
         </div>
-        <div class="menu_row">
-          <div class="col">
+        <div className="menu_row">
+          <div className="col">
             <button onClick={() => navigate("memory-jar")}>
-              <div class="game_card memory_jar">
-                <div class="card_contents">
+              <div className="game_card memory_jar">
+                <div className="card_contents">
                   <h3>Memory Jar</h3>
                   <p>
                     Create your own memory jar filled with memories, thoughts
@@ -33,13 +36,21 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>Memory Jar</h3>
+              <h3
+                className={
+                  ["light", "white"].includes(props.theme || "light")
+                    ? "text-dark"
+                    : "text-light"
+                }
+              >
+                Memory Jar
+              </h3>
             </button>
           </div>
-          <div class="col">
+          <div className="col">
             <button onClick={() => navigate("canvas")}>
-              <div class="game_card canvas">
-                <div class="card_contents">
+              <div className="game_card canvas">
+                <div className="card_contents">
                   <h3>Canvas</h3>
                   <p>
                     Use this blank canvas to express your thoughts, feelings and
@@ -47,13 +58,21 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>Canvas</h3>
+              <h3
+                className={
+                  ["light", "white"].includes(props.theme || "light")
+                    ? "text-dark"
+                    : "text-light"
+                }
+              >
+                Canvas
+              </h3>
             </button>
           </div>
-          <div class="col">
+          <div className="col">
             <button onClick={() => navigate("emotion-volcano")}>
-              <div class="game_card volcano">
-                <div class="card_contents">
+              <div className="game_card volcano">
+                <div className="card_contents">
                   <h3>Volcano</h3>
                   <p>
                     We all have thoughts and feelings and sometimes they can
@@ -63,13 +82,21 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>Volcano</h3>
+              <h3
+                className={
+                  ["light", "white"].includes(props.theme || "light")
+                    ? "text-dark"
+                    : "text-light"
+                }
+              >
+                Volcano
+              </h3>
             </button>
           </div>
-          <div class="col">
+          <div className="col">
             <button onClick={() => navigate("worry-monster")}>
-              <div class="game_card worry_monster">
-                <div class="card_contents">
+              <div className="game_card worry_monster">
+                <div className="card_contents">
                   <h3>Worry Monster</h3>
                   <p>
                     Sometimes it's hard to talk about our worries and it can
@@ -80,13 +107,21 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>Worry Monster</h3>
+              <h3
+                className={
+                  ["light", "white"].includes(props.theme || "light")
+                    ? "text-dark"
+                    : "text-light"
+                }
+              >
+                Worry Monster
+              </h3>
             </button>
           </div>
-          <div class="col">
+          <div className="col">
             <button onClick={() => navigate("emdr")}>
-              <div class="game_card emdr">
-                <div class="card_contents">
+              <div className="game_card emdr">
+                <div className="card_contents">
                   <h3>EMDR</h3>
                   <p>
                     This involves moving your eyes a specific way while you
@@ -95,20 +130,27 @@ function LandingPage() {
                   </p>
                 </div>
               </div>
-              <h3>EMDR</h3>
+              <h3
+                className={
+                  ["light", "white"].includes(props.theme || "light")
+                    ? "text-dark"
+                    : "text-light"
+                }
+              >
+                EMDR
+              </h3>
             </button>
           </div>
         </div>
-        <button
-          className="button back_button"
-          onClick={() => navigate("login")}
-        >
-          <i
-            className="fas_back_arrow fa-solid fa-arrow-left"
-            alt="back button"
-          ></i>
-          Log out
-        </button>
+        {/* <div className="back_button_container">
+          <button className="sign_out_button" onClick={() => navigate("login")}>
+            <i
+              className="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+            <p>Log out</p>
+          </button>
+        </div> */}
       </div>
     </>
   );

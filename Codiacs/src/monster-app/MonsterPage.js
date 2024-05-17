@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AppBackground from "../AppBackground";
 import "./MonsterPage.css";
 import Button from "../components/Button/Button.tsx";
@@ -13,7 +12,7 @@ function MonsterPage() {
   const [isDraggable, setIsDraggable] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   let burp = new Audio("burp-37726.mp3");
   const lightBlueHex = "#50c7f2";
@@ -211,177 +210,180 @@ function MonsterPage() {
   return (
     <>
       <AppBackground />
+      <h2>Worry Monster</h2>
       <div className="m-4">
-        <div className="row" style={{ position: "relative", top: "20vh" }}>
+        <div className="row" style={{ position: "relative" }}>
           <div className="col-md-8 p-1">
-            {nameSubmitted ? (
-              <>
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="drawCheckbox"
-                        checked={isDrawing}
-                        onChange={() => setIsDrawing(!isDrawing)}
-                        aria-labelledby="drawCheckboxLabel"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="drawCheckbox"
-                        id="drawCheckboxLabel"
-                      >
-                        Draw
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="textCheckbox"
-                        checked={isText}
-                        onChange={() => setIsText(!isText)}
-                        aria-labelledby="textCheckboxLabel"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="textCheckbox"
-                        id="textCheckboxLabel"
-                      >
-                        Text
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-md-8" hidden={!isDrawing}>
-                    <input
-                      data-testid="color-picker"
-                      type="color"
-                      className="js-color-picker  color-picker me-2"
-                      aria-label="Select color"
-                    />
-                    <input
-                      type="range"
-                      id="pixel-size-picker"
-                      className="js-line-range"
-                      min="1"
-                      max="80"
-                      defaultValue={"1"}
-                      aria-label="Select pixel size"
-                    />
-                    <label
-                      className="js-range-value ms-1 me-3"
-                      htmlFor="pixel-size-picker"
-                    >
-                      1 px
-                    </label>
-                    <Button
-                      children={"Clear"}
-                      onClick={clearCanvas}
-                      style={{ marginTop: "0px" }}
-                    />
-                  </div>
-                </div>
-                <div className="row p-0" hidden={!isDrawing}>
-                  <div className="col-md-12 p-0">
-                    <canvas
-                      id="monster-canvas"
-                      data-testid="monster-canvas"
-                      className="js-paint  paint-canvas"
-                      draggable={isDraggable}
-                      aria-label="Monster drawing area"
-                      role="img"
-                      style={{
-                        cursor: isDraggable ? "pointer" : "crosshair",
-                      }}
-                    ></canvas>
-                  </div>
-                </div>
-                {isText && (
+            <div hidden={isEating}>
+              {nameSubmitted ? (
+                <>
                   <div className="row">
-                    <div
-                      className="col-md-12 p-0"
-                      style={{
-                        cursor: isDraggable ? "pointer" : "text",
-                      }}
-                      draggable={isDraggable}
-                    >
-                      <textarea
-                        className="form-control"
-                        placeholder="Enter your worry here"
-                        rows={isDrawing ? "3" : "10"}
-                        value={textEntered}
-                        onChange={(e) => setTextEntered(e.target.value)}
-                        style={{
-                          textAlign: "center",
-                          pointerEvents: isDraggable ? "none" : "auto",
-                          fontFamily: "Comic Sans MS, Comic Sans, cursive",
-                          marginLeft: "0.5rem",
-                          marginRight: "0.5rem",
-                          marginTop: isDrawing ? "" : "0.5rem",
-                          marginBottom: "0.5rem",
-                          border: "2px #3b6db4 solid",
-                        }}
-                        aria-label="Enter your worry"
-                      ></textarea>
+                    <div className="col-md-4">
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="drawCheckbox"
+                          checked={isDrawing}
+                          onChange={() => setIsDrawing(!isDrawing)}
+                          aria-labelledby="drawCheckboxLabel"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="drawCheckbox"
+                          id="drawCheckboxLabel"
+                        >
+                          Draw
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="textCheckbox"
+                          checked={isText}
+                          onChange={() => setIsText(!isText)}
+                          aria-labelledby="textCheckboxLabel"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="textCheckbox"
+                          id="textCheckboxLabel"
+                        >
+                          Text
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-md-8" hidden={!isDrawing}>
+                      <input
+                        data-testid="color-picker"
+                        type="color"
+                        className="js-color-picker  color-picker me-2"
+                        aria-label="Select color"
+                      />
+                      <input
+                        type="range"
+                        id="pixel-size-picker"
+                        className="js-line-range"
+                        min="1"
+                        max="80"
+                        defaultValue={"1"}
+                        aria-label="Select pixel size"
+                      />
+                      <label
+                        className="js-range-value ms-1 me-3"
+                        htmlFor="pixel-size-picker"
+                      >
+                        1 px
+                      </label>
+                      <Button
+                        children={"Clear"}
+                        onClick={clearCanvas}
+                        style={{ marginTop: "0px" }}
+                      />
                     </div>
                   </div>
-                )}
-                {(isDrawing || isText) && !isEating ? (
-                  <div className="text-center">
-                    <Button
-                      className="my-2"
-                      children={
-                        isDraggable
-                          ? `Now drag your worry to ${monstersName}!`
-                          : `Click here when you're ready to feed ${monstersName}!`
-                      }
-                      onClick={handleButtonClick}
-                      disabled={isDraggable}
-                      aria-label={
-                        isDraggable
-                          ? `Now drag your worry to ${monstersName}!`
-                          : `Click here when you're ready to feed ${monstersName}!`
-                      }
-                    />
+                  <div className="row p-0" hidden={!isDrawing}>
+                    <div className="col-md-12 p-0">
+                      <canvas
+                        id="monster-canvas"
+                        data-testid="monster-canvas"
+                        className="js-paint  paint-canvas"
+                        draggable={isDraggable}
+                        aria-label="Monster drawing area"
+                        role="img"
+                        style={{
+                          cursor: isDraggable ? "pointer" : "crosshair",
+                        }}
+                      ></canvas>
+                    </div>
                   </div>
-                ) : (
-                  <></>
-                )}
-              </>
-            ) : (
-              <div className="text-center">
-                <h4 className="mb-4">Name your Worry Monster:</h4>
-                <div className="input-group mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="monster-name-input"
-                    placeholder="Enter name"
-                    aria-label="Enter name"
-                    aria-describedby="button-addon2"
-                    onChange={(e) => setMonstersName(e.target.value)}
-                  />
-                  <button
-                    className="btn"
-                    type="button"
-                    style={{
-                      color: "black",
-                      backgroundColor: lightBlueHex,
-                      border: lightBlueHex,
-                    }}
-                    onMouseEnter={(e) => handleButtonHover(e)}
-                    onMouseLeave={(e) => handleButtonLeave(e)}
-                    id="button-addon2"
-                    disabled={!monstersName}
-                    onClick={() => setNameSubmitted(true)}
-                    aria-label="Submit monster name"
-                  >
-                    Submit
-                  </button>
+                  {isText && (
+                    <div className="row">
+                      <div
+                        className="col-md-12 p-0"
+                        style={{
+                          cursor: isDraggable ? "pointer" : "text",
+                        }}
+                        draggable={isDraggable}
+                      >
+                        <textarea
+                          className="form-control"
+                          placeholder="Enter your worry here"
+                          rows={isDrawing ? "3" : "10"}
+                          value={textEntered}
+                          onChange={(e) => setTextEntered(e.target.value)}
+                          style={{
+                            textAlign: "center",
+                            pointerEvents: isDraggable ? "none" : "auto",
+                            fontFamily: "Comic Sans MS",
+                            marginLeft: "0.5rem",
+                            marginRight: "0.5rem",
+                            marginTop: isDrawing ? "" : "0.5rem",
+                            marginBottom: "0.5rem",
+                            border: "2px #3b6db4 solid",
+                          }}
+                          aria-label="Enter your worry"
+                        ></textarea>
+                      </div>
+                    </div>
+                  )}
+                  {(isDrawing || isText) && !isEating ? (
+                    <div className="text-center">
+                      <Button
+                        className="my-2"
+                        children={
+                          isDraggable
+                            ? `Now drag your worry to ${monstersName}!`
+                            : `Click here when you're ready to feed ${monstersName}!`
+                        }
+                        onClick={handleButtonClick}
+                        disabled={isDraggable}
+                        aria-label={
+                          isDraggable
+                            ? `Now drag your worry to ${monstersName}!`
+                            : `Click here when you're ready to feed ${monstersName}!`
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              ) : (
+                <div className="text-center">
+                  <h4 className="mb-4">Name your Worry Monster:</h4>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="monster-name-input"
+                      placeholder="Enter name"
+                      aria-label="Enter name"
+                      aria-describedby="button-addon2"
+                      onChange={(e) => setMonstersName(e.target.value)}
+                    />
+                    <button
+                      className="btn"
+                      type="button"
+                      style={{
+                        color: "black",
+                        backgroundColor: lightBlueHex,
+                        border: lightBlueHex,
+                      }}
+                      onMouseEnter={(e) => handleButtonHover(e)}
+                      onMouseLeave={(e) => handleButtonLeave(e)}
+                      id="button-addon2"
+                      disabled={!monstersName}
+                      onClick={() => setNameSubmitted(true)}
+                      aria-label="Submit monster name"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <div className="col-md-4">
             <div
@@ -393,18 +395,26 @@ function MonsterPage() {
                 padding: "10px",
               }}
             >
-              Hello!&nbsp;
-              {monstersName && (
+              {isEating ? (
                 <>
-                  I am&nbsp;
-                  <b>{monstersName}</b>
+                  <b>{monstersName}</b> is eating...
+                </>
+              ) : (
+                <>
+                  Hello!&nbsp;
+                  {monstersName && (
+                    <>
+                      I am&nbsp;
+                      <b>{monstersName}</b>
+                    </>
+                  )}
                 </>
               )}
             </div>
             {isEating ? (
               <img
                 id=""
-                src="img/worry-eater-mouth-closed.jpeg"
+                src="img/worry-eater-mouth-closed.png"
                 alt="Worry Monster Eating"
                 className="img-fluid"
                 draggable="false"
@@ -415,7 +425,7 @@ function MonsterPage() {
               <img
                 id="dropzone"
                 data-testid="monster-hungry-img"
-                src="img/worry-eater-mouth-open.jpg"
+                src="img/worry-eater-mouth-open.png"
                 alt="Worry Monster Hungry"
                 className="img-fluid"
                 draggable="false"
@@ -427,13 +437,14 @@ function MonsterPage() {
             )}
           </div>
         </div>
-        <button className="button back_button" onClick={() => navigate("/")}>
-          <i
-            className="fas_back_arrow fa-solid fa-arrow-left"
-            alt="back button"
-          ></i>
-          Back
-        </button>
+        {/* <div class="back_button_container">
+          <button class="back_button" onClick={() => navigate("/")}>
+            <i
+              class="fas_back_arrow fa-solid fa-arrow-left"
+              alt="back button"
+            ></i>
+          </button>
+        </div> */}
       </div>
     </>
   );

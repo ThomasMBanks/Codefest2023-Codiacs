@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import "./canvas.css";
 import { useEffect, useState, useRef } from "react";
 import Button from "../components/Button/Button.tsx";
@@ -22,7 +21,7 @@ const fontFamilies = [
 ];
 
 function Canvas() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const canvasRef = useRef(null);
   const [penColour, setPenColour] = useState("#000000");
   const [showBackgroundModal, setShowBackgroundModal] = useState(false);
@@ -475,8 +474,17 @@ function Canvas() {
   return (
     <>
       <AppBackground />
+      {/* <div class="back_button_container">
+        <button class="back_button" onClick={() => navigate("/")}>
+          <i
+            class="fas_back_arrow fa-solid fa-arrow-left"
+            alt="back button"
+          ></i>
+        </button>
+      </div> */}
+      <h2>Canvas</h2>
       <div style={{ position: "relative" }}>
-        <div className="row" style={{ marginTop: "20vh" }}>
+        <div className="row">
           <div className="col-md-12">
             <span className="ms-1">
               Current:
@@ -585,13 +593,6 @@ function Canvas() {
               tabIndex="0"
             ></canvas>
           </div>
-          <button className="button back_button" onClick={() => navigate("/")}>
-            <i
-              className="fas_back_arrow fa-solid fa-arrow-left"
-              alt="back button"
-            ></i>
-            Back
-          </button>
         </div>
       </div>
       {showBackgroundModal && (

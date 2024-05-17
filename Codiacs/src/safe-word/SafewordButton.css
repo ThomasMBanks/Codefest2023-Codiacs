@@ -1,23 +1,26 @@
 .circle {
-  position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition effect */
-    right: 20vw;
-  
-    /* Add some additional styling to make the text white and center it */
-    color: white;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .circle:hover {
-    background-color: darkred; /* Darken the background on hover */
-  }
-  
+  position: relative; /* Ensures it is positioned above the fixed element */
+  z-index: 1; /* Explicitly set a higher z-index */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: red;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition effect */
+  word-wrap: break-word;
+  word-wrap: break-all;
+  z-index: 1;
+
+  /* Add some additional styling to make the text white and center it */
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.circle:hover {
+  background-color: darkred; /* Darken the background on hover */
+  color: white;
+}
