@@ -74,7 +74,7 @@ function AppHeader(props) {
       </div>
       {showSettingsModal && (
         <Modal
-          heading="Settings (Under construction)"
+          heading="Settings"
           footer={
             <Button light onClick={applySettings}>
               Apply
