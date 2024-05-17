@@ -21,27 +21,29 @@ function AppHeader(props) {
     }
   }, []);
 
+  useEffect(() => {
+    setTheme(props.theme || "light");
+  }, [props.theme]);
+
   const handleBackButtonClick = () => {
-    if (!isHomePage) {
-      navigate(isHomePage ? "/login" : "/");
-    } else {
+    if (isHomePage) {
       setShowSettingsModal(true);
+    } else {
+      navigate(isHomePage ? "/login" : "/");
     }
   };
 
   const applySettings = () => {
     setShowSettingsModal(false);
     props.setUsersName(usersName);
+    props.setTheme(theme);
   };
 
   return (
     <>
       <div className="row">
         <div className="col-sm-5 text-sm-start">
-          <button
-            class={"back_button" + " m-3"}
-            onClick={handleBackButtonClick}
-          >
+          <button class="back_button m-3" onClick={handleBackButtonClick}>
             {isHomePage ? (
               <span
                 class="text-center fas_back_arrow fa-solid"

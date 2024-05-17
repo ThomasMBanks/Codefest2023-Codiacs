@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import "./canvas.css";
 import { useEffect, useState, useRef } from "react";
 import Button from "../components/Button/Button.tsx";
@@ -7,7 +6,6 @@ import jsPDF from "jspdf";
 import Modal from "../components/Modal/Modal.tsx";
 import AppBackground from "../AppBackground";
 import EmojiPicker from "emoji-picker-react";
-import AppHeader from "../AppHeader.js";
 
 const fontFamilies = [
   "Arial",
@@ -23,7 +21,7 @@ const fontFamilies = [
 ];
 
 function Canvas() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const canvasRef = useRef(null);
   const [penColour, setPenColour] = useState("#000000");
   const [showBackgroundModal, setShowBackgroundModal] = useState(false);
@@ -476,7 +474,6 @@ function Canvas() {
   return (
     <>
       <AppBackground />
-      <AppHeader />
       {/* <div class="back_button_container">
         <button class="back_button" onClick={() => navigate("/")}>
           <i

@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./EMDR.css";
-import AppBackground from "../AppBackground";
-import AppHeader from "../AppHeader";
 
 const EMDRPage = (props) => {
   const [speed, setSpeed] = useState(5);
   const [size, setSize] = useState(50);
-  const [theme, setTheme] = useState("white");
+  const [theme, setTheme] = useState(props.theme === "dark" ? "dark" : "light");
   const [movement, setMovement] = useState("linear");
   const [fullScreen, setFullScreen] = useState(false);
   const [isMoving, setIsMoving] = useState(true);
   const [isPopOut, setIsPopOut] = useState(false);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -48,7 +46,7 @@ const EMDRPage = (props) => {
     }
 
     //reset background colour if browser's forward/backward buttons are clicked
-    return () => props.onThemeChange("white");
+    //return () => props.onThemeChange("light");
   }, [movement, props, size]);
 
   useEffect(() => {
@@ -60,7 +58,7 @@ const EMDRPage = (props) => {
 
     if (urlSpeed) setSpeed(parseInt(urlSpeed));
     if (urlSize) setSize(parseInt(urlSize));
-    if (urlTheme) setTheme(urlTheme === "dark" ? "#212529" : urlTheme);
+    if (urlTheme) setTheme(urlTheme === "dark" ? "dark" : urlTheme);
     if (urlPopout) setIsPopOut(urlPopout === "true");
   }, [location]);
 
@@ -97,21 +95,21 @@ const EMDRPage = (props) => {
 
   useEffect(() => {
     let dot = document.getElementById("dot");
-    dot.style.backgroundColor = theme === "#212529" ? "white" : "black";
+    dot.style.backgroundColor = theme === "dark" ? "white" : "black";
     props.onThemeChange(theme);
   }, [theme, props]);
 
-  const handleBackButton = () => {
-    props.onThemeChange("white");
-    navigate("/");
-  };
+  // const handleBackButton = () => {
+  //   props.onThemeChange("light");
+  //   navigate("/");
+  // };
 
   const handlePopOut = () => {
     // Specify URL and window properties
     const url =
       window.location.href +
       `?popout=true&size=${size}&speed=${speed}&theme=${
-        theme === "#212529" ? "dark" : theme
+        theme === "dark" ? "dark" : theme
       }`;
     const windowName = "EMDR Pop Out Window";
     const screenWidth = window.screen.width;
@@ -140,7 +138,6 @@ const EMDRPage = (props) => {
       {!isPopOut ? (
         <>
           {/* <AppBackground hideBackground={theme} /> */}
-          <AppHeader />
           {/* <div class="back_button_container">
             <button class="back_button" onClick={handleBackButton}>
               <i
@@ -164,7 +161,9 @@ const EMDRPage = (props) => {
       )}
       <div
         data-testid="emdrPage"
-        className={`${theme === "#212529" ? " bg-dark text-light" : ""}`}
+        className={`${
+          theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"
+        }`}
         style={{ position: "relative", marginTop: isPopOut ? "35vh" : "0vh" }}
       >
         {!isPopOut ? (
@@ -223,12 +222,12 @@ const EMDRPage = (props) => {
                           onChange={(e) => setTheme(e.target.value)}
                           aria-label="Select background theme"
                         >
-                          <option value="white">Light</option>
-                          <option value="#212529">Dark</option>
+                          <option value="light">Light</option>
+                          <option value="dark">Dark</option>
                           {/* <option value="blue">Blue</option>
                     <option value="green">Green</option>
                     <option value="red">Red</option> */}
-                          <option value="yellow">Yellow</option>
+                          {/* <option value="yellow">Yellow</option> */}
                         </select>
                       </div>
 

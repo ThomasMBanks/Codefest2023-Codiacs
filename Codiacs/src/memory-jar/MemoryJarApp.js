@@ -5,7 +5,6 @@ import memoryJarImage from "../images/memory-jar.jpg";
 import AppBackground from "../AppBackground";
 import Memory from "./Memory";
 import "./MemoryJarApp.css";
-import AppHeader from "../AppHeader";
 
 function MemoryJarApp() {
   const [memories, setMemories] = useState([]);
@@ -59,7 +58,6 @@ function MemoryJarApp() {
   return (
     <>
       <AppBackground />
-      <AppHeader />
       <h2>Memory Jar (under construction)</h2>
 
       <div className="row align-items-center">

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AppBackground from "../AppBackground";
 import "./MonsterPage.css";
 import Button from "../components/Button/Button.tsx";
-import AppHeader from "../AppHeader.js";
 
 function MonsterPage() {
   const [isEating, setIsEating] = useState(false);
@@ -14,7 +12,7 @@ function MonsterPage() {
   const [isDraggable, setIsDraggable] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   let burp = new Audio("burp-37726.mp3");
   const lightBlueHex = "#50c7f2";
@@ -212,7 +210,6 @@ function MonsterPage() {
   return (
     <>
       <AppBackground />
-      <AppHeader />
       <h2>Worry Monster</h2>
       <div className="m-4">
         <div className="row" style={{ position: "relative" }}>

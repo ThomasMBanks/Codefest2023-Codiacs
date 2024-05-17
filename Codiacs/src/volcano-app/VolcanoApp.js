@@ -11,7 +11,6 @@ import Textbox from "../components/Textbox/Textbox.tsx";
 import Button from "../components/Button/Button.tsx";
 import Modal from "../components/Modal/Modal.tsx";
 import Rating from "../components/Rating/Rating.tsx";
-import AppHeader from "../AppHeader.js";
 
 function VolcanoApp() {
   const [selectedEmotions, setSelectedEmotions] = useState([]);
@@ -24,7 +23,7 @@ function VolcanoApp() {
   const [triggerPoint, setTriggerPoint] = useState(null);
   const [progressUnit, setProgressUnit] = useState(null);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const bubbling = useRef(new Audio("volcano-bubbling.mp3"));
   let erupting = new Audio("volcano-erupting.wav");
@@ -126,7 +125,6 @@ function VolcanoApp() {
     <div id="volcano-app">
       {/* first we add the page header, and pass the page title as "Emotion Volcano" */}
       <AppBackground hideBackground />
-      <AppHeader />
 
       {/* then we add the main page content here, using the grid system to allocate space */}
       <div className="row align-items-center" style={{ height: "80vh" }}>
