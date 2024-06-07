@@ -19,6 +19,7 @@ function MemoryJarApp() {
   );
   const [fillingJar, setFillingJar] = useState(false);
   const [editingMemory, setEditingMemory] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,7 +64,7 @@ function MemoryJarApp() {
 
   return (
     <>
-      <AppBackground />
+      <AppBackground setIsDarkMode={setIsDarkMode} />
 
       <div className="row" style={{ marginTop: "2.5%" }}>
         {!fillingJar ? (
@@ -121,6 +122,7 @@ function MemoryJarApp() {
                     onClick={() => {
                       editingMemory ? void 0 : displayMemory(memoryObj);
                     }}
+                    isDarkMode={isDarkMode}
                   />
                 ))}
               </div>
@@ -149,6 +151,7 @@ function MemoryJarApp() {
             memories={memories}
             amounts={amounts}
             setFillingJar={setFillingJar}
+            isDarkMode={isDarkMode}
           />
         )}
       </div>

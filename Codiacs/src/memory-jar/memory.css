@@ -54,9 +54,12 @@
 
 .memory-text {
   mix-blend-mode: difference;
-  filter: invert(1);
   font-weight: bold;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.light-mode-memory {
+  filter: invert(1);
 }

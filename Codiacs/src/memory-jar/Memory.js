@@ -14,6 +14,11 @@ function Memory(props) {
     className += " with-slider";
   }
 
+  var memoryClassName = "memory-text";
+  if (!props.isDarkMode) {
+    memoryClassName += " light-mode-memory";
+  }
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div
@@ -24,7 +29,7 @@ function Memory(props) {
         }}
         onClick={props.onClick}
       >
-        <div className="memory-text">{props.memory}</div>
+        <div className={memoryClassName}>{props.memory}</div>
 
         {props.showSlider && (
           <div className="form-group mt-2">

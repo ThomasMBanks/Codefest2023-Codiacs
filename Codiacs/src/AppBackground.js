@@ -10,6 +10,7 @@ import "./fontawesome-free-6.5.1-web/css/all.css";
 function AppBackground(props) {
   const elementRef = useRef(null);
   const [isDark, setIsDark] = useState(false);
+  const setIsDarkMode = props.setIsDarkMode ? props.setIsDarkMode : null;
 
   useEffect(() => {
     if (elementRef.current) {
@@ -38,6 +39,12 @@ function AppBackground(props) {
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (setIsDarkMode) {
+      setIsDarkMode(isDark);
+    }
+  }, [isDark]);
 
   return (
     <>
