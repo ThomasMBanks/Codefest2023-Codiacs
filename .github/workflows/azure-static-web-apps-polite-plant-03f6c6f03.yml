@@ -31,10 +31,7 @@ jobs:
         run: |
           cd Codiacs
           npm install --legacy-peer-deps
-
-      # Build the project
-      - name: Build
-        run: npm run build
+          npm run build
 
       # Deploy to Azure Static Web Apps
       - name: Build And Deploy
