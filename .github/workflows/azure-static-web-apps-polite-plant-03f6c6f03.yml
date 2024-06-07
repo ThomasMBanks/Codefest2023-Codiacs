@@ -20,18 +20,18 @@ jobs:
           submodules: true
           lfs: false
       
-      # Setup Node.js environment
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16' # Use Node.js 16.x for React 18 compatibility
+          node-version: '16' # Specify the version of Node.js you need
 
-      # Install dependencies with --legacy-peer-deps flag
       - name: Install Dependencies
-        run: |
-          cd Codiacs
-          npm install --legacy-peer-deps
-          npm run build
+        run: npm install --legacy-peer-deps
+        working-directory: ./Codiacs
+
+      - name: Build React App
+        run: npm run build
+        working-directory: ./Codiacs
 
       # Deploy to Azure Static Web Apps
       - name: Build And Deploy
