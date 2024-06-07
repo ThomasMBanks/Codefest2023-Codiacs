@@ -1,8 +1,7 @@
 import React from "react";
-import FocusTrap from "focus-trap-react"
+import FocusTrap from "focus-trap-react";
 import CloseButton from "react-bootstrap/CloseButton";
 import "./ModalContent.css";
-import Button from "../Button/Button.tsx";
 
 export interface ModalContentProps {
   heading: string;
@@ -34,10 +33,10 @@ function ModalContent({
           </div>
         )}
         <div className="headings">
-        <h1>{heading}</h1>
+          <h1>{heading}</h1>
           <h2>{subheading}</h2>
-      </div>
-      {children}
+        </div>
+        <div className="modal-body">{children}</div>
         <div className="modal-footer">{footer}</div>
       </div>
     </FocusTrap>

@@ -27,6 +27,7 @@ function UnusedEmotions(props) {
             onDragStart={(e) => handleOnDrag(e, word)}
             onKeyDown={(e) => handleClick(e, word)}
             aria-label="Press enter to add this emotion to the volcano"
+            style={{ position: "relative", zIndex: 1 }}
           >
             {word}
           </Button>

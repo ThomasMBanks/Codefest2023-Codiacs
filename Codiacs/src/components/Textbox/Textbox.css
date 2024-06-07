@@ -7,6 +7,8 @@
     border-radius: 10px;
     outline: none;
     resize: none;
+    z-index: 1;
+    position: relative;
 }
 
 .textbox:focus {

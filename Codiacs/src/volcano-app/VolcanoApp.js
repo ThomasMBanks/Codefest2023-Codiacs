@@ -1,9 +1,11 @@
 import { React, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import GifPlayer from "react-gif-player";
+import EmojiPicker from "emoji-picker-react";
 
 // importing all of the custom components needed for the page
 import ProgressBar from "./ProgressBar";
-import volcanoAnimation from "../images/volcano-animation.mp4";
+import volcanoAnimation from "../images/volcano-animation.gif";
+import volcanoStill from "../images/volcano-still.gif";
 import UnusedEmotions from "./UnusedEmotions";
 import UsedEmotions from "./UsedEmotions";
 import AppBackground from "../AppBackground.js";
@@ -22,12 +24,11 @@ function VolcanoApp() {
   const [clickedEmotion, setClickedEmotion] = useState("");
   const [triggerPoint, setTriggerPoint] = useState(null);
   const [progressUnit, setProgressUnit] = useState(null);
-
-  //const navigate = useNavigate();
+  const [volcanoFull, setVolcanoFull] = useState(false);
+  const [showNewEmotionModal, setShowNewEmotionModal] = useState(false);
 
   const bubbling = useRef(new Audio("volcano-bubbling.mp3"));
   let erupting = new Audio("volcano-erupting.wav");
-  const videoRef = useRef(null);
 
   useEffect(() => {
     if (triggerPoint !== null) {
@@ -37,27 +38,15 @@ function VolcanoApp() {
 
   // sets the initial word emotions on the left hand side
   const [unusedEmotions, setUnusedEmotions] = useState([
-    "happy",
-    "sad",
-    "confused",
-    "excited",
-    "worried",
-    "scared",
-    "angry",
-    "tired",
+    "happy 🙂",
+    "sad 🙁",
+    "confused 😕",
+    "excited 😁",
+    "worried 😖",
+    "scared 😨",
+    "angry 😡",
+    "tired 😴",
   ]);
-
-  // sets the initial emoji emotions on the left hand side
-  //   const [unusedEmojiEmotions, setUnusedEmojiEmotions] = useState([
-  //     { symbol: "😀", label: "happy" },
-  //     { symbol: "😢", label: "sad" },
-  //     { symbol: "😕", label: "confused" },
-  //     { symbol: "😃", label: "excited" },
-  //     { symbol: "😟", label: "worried" },
-  //     { symbol: "😨", label: "scared" },
-  //     { symbol: "😠", label: "angry" },
-  //     { symbol: "😴", label: "tired" },
-  //   ]);
 
   // function defining behaviour when a feeling is dropped into the volcano
   function handleItemEnter(emotion) {
@@ -90,15 +79,21 @@ function VolcanoApp() {
     const newUnusedEmotions = [...unusedEmotions, customEmotion];
     setUnusedEmotions(newUnusedEmotions);
     setCustomEmotion("");
+    setShowNewEmotionModal(false);
   }
 
   function handleTriggerEnter() {
     setTriggerModalOpen(false);
   }
 
-  function handleChange(e) {
+  function handleEmotionChange(e) {
     setCustomEmotion(e.target.value);
   }
+
+  const handleEmojiClick = (emojiObj) => {
+    setCustomEmotion((prevText) => prevText + emojiObj.emoji);
+    console.log(emojiObj.emoji);
+  };
 
   function handleSubmit() {
     setShowModal(false);
@@ -117,14 +112,21 @@ function VolcanoApp() {
       erupting.currentTime = 0; // Reset audio to beginning
       erupting.volume = 0.2;
       erupting.play();
-      videoRef.current.play();
+      setVolcanoFull(true);
     }
   }, [progress]);
+
+  // this ensures the bubbling audio stops when the component unmounts
+  useEffect(() => {
+    return () => {
+      bubbling.current.pause();
+    };
+  }, []);
 
   return (
     <div id="volcano-app">
       {/* first we add the page header, and pass the page title as "Emotion Volcano" */}
-      <AppBackground hideBackground />
+      <AppBackground />
 
       {/* then we add the main page content here, using the grid system to allocate space */}
       <div className="row align-items-center" style={{ height: "80vh" }}>
@@ -141,15 +143,10 @@ function VolcanoApp() {
               paddingTop: "10%",
             }}
           >
-            <label id="textbox-label">Add your own emotions!</label>
-            <Textbox
-              id="textbox"
-              size="lg"
-              labelledBy="textbox-label"
-              value={customEmotion}
-              onChange={handleChange}
-            />
-            <Button media="&#43;" onClick={handleAdd}>
+            <label id="textbox-label">
+              Use the button below to add your own emotions!
+            </label>
+            <Button media="&#43;" onClick={() => setShowNewEmotionModal(true)}>
               <nobr>Add emotion</nobr>
             </Button>
           </div>
@@ -162,11 +159,44 @@ function VolcanoApp() {
             onDrop={handleOnDrop}
             onDragOver={handleDragOver}
           >
-            <video width="750" height="500" ref={videoRef}>
-              <source src={volcanoAnimation} type="video/mp4" />
-            </video>
+            <div>
+              <img
+                src={volcanoStill}
+                style={{
+                  position: "absolute",
+                  top: "33%",
+                  left: "calc(50% - 200px)",
+                  zIndex: 1,
+                  width: "400px",
+                }}
+              />
+              {volcanoFull && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "33%",
+                    left: "calc(50% - 200px)",
+                    zIndex: 2,
+                  }}
+                >
+                  <GifPlayer
+                    gif={volcanoAnimation}
+                    autoplay
+                    style={{ width: "400px" }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              position: "absolute",
+              top: "70%",
+              left: "calc(50% - 190px)",
+            }}
+          >
             <ProgressBar progress={progress} />
           </div>
         </div>
@@ -176,20 +206,12 @@ function VolcanoApp() {
             <UsedEmotions emotions={selectedEmotions} />
           </div>
         </div>
-        {/* <div class="back_button_container">
-          <button class="back_button" onClick={() => navigate("/")}>
-            <i
-              class="fas_back_arrow fa-solid fa-arrow-left"
-              alt="back button"
-            ></i>
-          </button>
-        </div> */}
       </div>
 
       {triggerModalOpen && (
         <Modal
           heading="How are you feeling today?"
-          subheading="(1 = very bad, 10 = very good)"
+          subheading="(1 = not very good, 10 = very good)"
           footer={
             <Button light onClick={handleTriggerEnter}>
               Enter
@@ -209,17 +231,56 @@ function VolcanoApp() {
         <Modal
           heading="Rate Your Emotion"
           footer={
-            <Button light onClick={handleSubmit}>
+            <Button light onClick={handleSubmit} id="volcano-go-button">
               Go
             </Button>
           }
           noClose
         >
-          <Rating
-            amount={10}
-            selectedAmount={emotionRating}
-            setSelectedAmount={setEmotionRating}
+          <>
+            <Rating
+              amount={10}
+              selectedAmount={emotionRating}
+              setSelectedAmount={setEmotionRating}
+            />
+            <h2 style={{ fontSize: "18pt", marginTop: "5%" }}>
+              If you would like to, you can explain why in the box below.
+            </h2>
+            <Textbox size="lg" labelledBy="Explain why you feel this way" />
+          </>
+        </Modal>
+      )}
+
+      {showNewEmotionModal && (
+        <Modal
+          heading="Add New Emotion"
+          footer={
+            <Button light onClick={handleAdd}>
+              Add
+            </Button>
+          }
+          noClose={undefined}
+          onClose={() => setShowNewEmotionModal(false)}
+        >
+          <label htmlFor="textInput" className="form-label">
+            Enter your emotion below
+          </label>
+          <input
+            type="text"
+            className="form-control mb-1"
+            id="textInput"
+            value={customEmotion}
+            onChange={handleEmotionChange}
+            placeholder="Enter text"
+            aria-label="Enter text"
           />
+          <div className="text-center mb-2">
+            <EmojiPicker
+              onEmojiClick={handleEmojiClick}
+              reactionsDefaultOpen={true}
+              emojiStyle="native"
+            />
+          </div>
         </Modal>
       )}
     </div>

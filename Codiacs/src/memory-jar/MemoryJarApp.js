@@ -1,128 +1,156 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import tinycolor from "tinycolor2";
 
-import memoryJarImage from "../images/memory-jar.jpg";
 import AppBackground from "../AppBackground";
 import Memory from "./Memory";
+import Textbox from "../components/Textbox/Textbox.tsx";
+import Button from "../components/Button/Button.tsx";
 import "./MemoryJarApp.css";
+import MemoryJarFilling from "./MemoryJarFilling.js";
 
 function MemoryJarApp() {
   const [memories, setMemories] = useState([]);
-  var amounts = [];
+  const [amounts, setAmounts] = useState([]);
   const [memoryToAdd, setMemoryToAdd] = useState("");
-
-  const [percentages, setPercentages] = useState([]);
-  const [cumulativePercentages, setCumulativePercentages] = useState([]);
+  const [memoryColour, setMemoryColour] = useState("#000000");
+  const [selectedMemory, setSelectedMemory] = useState(
+    "Click on a memory to read it here"
+  );
+  const [fillingJar, setFillingJar] = useState(false);
+  const [editingMemory, setEditingMemory] = useState(false);
 
   const navigate = useNavigate();
 
-  function createPercentages() {
-    const total = amounts.reduce((partialSum, a) => partialSum + +a, 0);
-    var counter = 0;
-    var temp;
-    var previous;
-    for (const amount of amounts) {
-      const percentage = 0.735 * (amount / total) * 100;
-      if (counter === 0) {
-        temp = percentage + 2.5;
-      } else {
-        temp = previous + percentage;
-      }
-      percentages.push(percentage.toString() + "%");
-      cumulativePercentages.push(temp.toString() + "%");
-      previous = temp;
-      counter += 1;
-    }
-    for (var i = 0; i < memories.length; i++) {
-      const item = document.getElementById("overlay" + i);
-      item.style.height = percentages[i];
-      if (i > 0) {
-        item.style.bottom = cumulativePercentages[i - 1];
-      }
-    }
-  }
+  function handleAdd() {
+    var jarColour = tinycolor(memoryColour);
+    jarColour.setAlpha(0.75);
 
-  function handleClick() {
-    setMemories([...memories, memoryToAdd]);
+    setMemories([
+      ...memories,
+      { memory: memoryToAdd, memoryColour: memoryColour, jarColour: jarColour },
+    ]);
     setMemoryToAdd("");
   }
 
-  useEffect(() => {
-    if (memories.length === 5 || memoryToAdd === "") {
-      document.getElementById("memory-input-button").disabled = true;
-    } else {
-      document.getElementById("memory-input-button").disabled = false;
-    }
-  }, [memories, memoryToAdd]);
+  function handleEdit() {
+    var jarColour = tinycolor(memoryColour);
+    jarColour.setAlpha(0.75);
+
+    var tempMemories = [...memories];
+    tempMemories[memories.indexOf(selectedMemory)] = {
+      memory: memoryToAdd,
+      memoryColour: memoryColour,
+      jarColour: jarColour,
+    };
+
+    setMemories(tempMemories);
+    setSelectedMemory("Click on a memory to read it here");
+    setEditingMemory(false);
+    setMemoryToAdd("");
+  }
+
+  function handleFill() {
+    setFillingJar(true);
+
+    var tempAmounts = Array(memories.length).fill(50);
+    setAmounts(tempAmounts);
+  }
+
+  function displayMemory(memoryObj) {
+    setSelectedMemory(memoryObj);
+  }
 
   return (
     <>
       <AppBackground />
-      <h2>Memory Jar (under construction)</h2>
 
-      <div className="row align-items-center">
-        <div className="col-sm-5" style={{ paddingLeft: "2%" }}>
-          {memories.slice(0, 3).map((memory, index) => (
-            <Memory memory={memory} amounts={amounts} counter={index} />
-          ))}
-        </div>
-        <div className="col-sm-3">
-          <div className="memory-container">
-            <img
-              src={memoryJarImage}
-              alt="Memory Jar"
-              style={{ height: "300px" }}
-            />
-            <div className="overlay first" id="overlay0"></div>
-            <div className="overlay second" id="overlay1"></div>
-            <div className="overlay third" id="overlay2"></div>
-            <div className="overlay fourth" id="overlay3"></div>
-            <div className="overlay fifth" id="overlay4"></div>
-          </div>
-        </div>
-        <div className="col-sm-4">
-          {memories.slice(3, 5).map((memory, index) => (
-            <Memory memory={memory} amounts={amounts} counter={index + 3} />
-          ))}
-        </div>
+      <div className="row" style={{ marginTop: "2.5%" }}>
+        {!fillingJar ? (
+          <>
+            <div className="col-sm-6" style={{ paddingLeft: "5%" }}>
+              <Textbox
+                size="lg"
+                rows="8"
+                onChange={(e) => setMemoryToAdd(e.target.value)}
+                value={memoryToAdd}
+              />
+              <div style={{ display: "inline-flex", alignItems: "center" }}>
+                <input
+                  data-testid="color-picker"
+                  type="color"
+                  className="js-color-picker color-picker me-4"
+                  style={{ height: "50px", width: "100px" }}
+                  aria-label="Select colour for memory"
+                  value={memoryColour}
+                  onChange={(e) => setMemoryColour(e.target.value)}
+                />
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    children={editingMemory ? "Add changes" : "Add"}
+                    onClick={editingMemory ? handleEdit : handleAdd}
+                    disabled={memories.length === 5 || memoryToAdd === ""}
+                    aria-label="Add memory, thought or feeling"
+                    style={{ marginTop: "0px" }}
+                  />
 
-        <div className="memory_inputs">
-          <textarea
-            id="memory-input"
-            rows="4"
-            className="user_input"
-            value={memoryToAdd}
-            onChange={(e) => setMemoryToAdd(e.target.value)}
-          ></textarea>
-          <div className="memory_buttons">
-            <button
-              id="memory-input-button"
-              className="button"
-              onClick={handleClick}
-            >
-              Add
-            </button>
+                  <Button
+                    children="Fill your jar!"
+                    onClick={handleFill}
+                    disabled={memories.length === 0}
+                    aria-label="Fill your jar"
+                    style={{ marginTop: "0px" }}
+                  />
+                </div>
+              </div>
 
-            <button
-              id="create-jar-button"
-              type="submit"
-              onClick={createPercentages}
-              className="button"
-            >
-              Fill your jar!
-            </button>
-          </div>
-        </div>
+              <div>
+                {memories.map((memoryObj, index) => (
+                  <Memory
+                    key={index}
+                    memory={memoryObj.memory}
+                    amounts={amounts}
+                    counter={index}
+                    memoryColour={memoryObj.memoryColour}
+                    showSlider={false}
+                    onClick={() => {
+                      editingMemory ? void 0 : displayMemory(memoryObj);
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
 
-        <div style={{ display: "flex", justifyContent: "center" }}></div>
-        {/* <div class="back_button_container">
-          <button class="back_button" onClick={() => navigate("/")}>
-            <i
-              class="fas_back_arrow fa-solid fa-arrow-left"
-              alt="back button"
-            ></i>
-          </button>
-        </div> */}
+            <div className="col-sm-5 memory-box-outer">
+              <div className="memory-box-inner">
+                <div style={{ minHeight: "calc(70vh - 200px)" }}>
+                  {selectedMemory.memory}
+                </div>
+                <Button
+                  onClick={() => {
+                    setMemoryToAdd(selectedMemory.memory);
+                    setMemoryColour(selectedMemory.memoryColour);
+                    setEditingMemory(true);
+                  }}
+                  style={{ margin: "0px" }}
+                >
+                  Edit this memory
+                </Button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <MemoryJarFilling
+            memories={memories}
+            amounts={amounts}
+            setFillingJar={setFillingJar}
+          />
+        )}
       </div>
     </>
   );

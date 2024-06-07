@@ -7,6 +7,7 @@ export interface TextboxComponentProps {
   labelledBy?: string;
   onChange?: ChangeEventHandler<any>;
   value?: string;
+  rows?: number;
 }
 
 function Textbox({
@@ -15,6 +16,7 @@ function Textbox({
   labelledBy,
   onChange,
   value,
+  rows
 }: TextboxComponentProps) {
   return labelledBy && size === "sm" ? (
     <input
@@ -27,6 +29,7 @@ function Textbox({
   ) : labelledBy && size === "lg" ? (
     <textarea
       className="textarea"
+      rows={rows}
       aria-labelledby={labelledBy}
       value={value}
       onChange={onChange}
@@ -42,6 +45,7 @@ function Textbox({
   ) : size === "lg" ? (
     <textarea
       className="textarea"
+      rows={rows}
       aria-label={label}
       value={value}
       onChange={onChange}
