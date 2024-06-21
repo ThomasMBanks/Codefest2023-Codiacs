@@ -130,7 +130,9 @@ function MemoryJarApp() {
 
             <div className="col-sm-5 memory-box-outer">
               <div className="memory-box-inner">
-                <div style={{ minHeight: "calc(70vh - 200px)" }}>
+                <div
+                  style={{ minHeight: "calc(70vh - 200px)", color: "black" }}
+                >
                   {selectedMemory.memory}
                 </div>
                 <Button

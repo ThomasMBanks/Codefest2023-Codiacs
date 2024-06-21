@@ -124,8 +124,7 @@ function VolcanoApp() {
   }, []);
 
   return (
-    <div id="volcano-app">
-      {/* first we add the page header, and pass the page title as "Emotion Volcano" */}
+    <>
       <AppBackground />
 
       {/* then we add the main page content here, using the grid system to allocate space */}
@@ -283,7 +282,7 @@ function VolcanoApp() {
           </div>
         </Modal>
       )}
-    </div>
+    </>
   );
 }
 
