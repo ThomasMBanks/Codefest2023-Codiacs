@@ -192,7 +192,7 @@ function VolcanoApp() {
               display: "flex",
               justifyContent: "center",
               position: "absolute",
-              top: "70%",
+              top: "calc(33% + 370px)",
               left: "calc(50% - 190px)",
             }}
           >
